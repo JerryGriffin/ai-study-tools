@@ -2977,3 +2977,13 @@ svg {
 .welcome {
   padding-top: clamp(24px, 6vh, 72px);
 }
+
+/* 精简：只保留对话、章节与设置 */
+#practiceBtn,
+#themeBtn,
+.recent-block,
+.side-footer {
+  display: none !important;
+}
+.new-chat kbd { display: none; }
+#statusBtn { cursor: default; }

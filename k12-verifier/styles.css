@@ -2644,3 +2644,12 @@ body:has(#errorCard:not([hidden])) .sample-block {
 .final-answer .katex,
 .final-answer .katex * { color: var(--ink); }
 .answer-card-head { color: var(--muted); }
+
+/* 精简：只保留输入、答案、校验依据、解析与自查 */
+#themeBtn,
+.sample-block,
+.candidates-card,
+.insight-grid,
+.report-footnote {
+  display: none !important;
+}
