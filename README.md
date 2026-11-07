@@ -14,13 +14,11 @@
 - 作业校验台：<https://jerrygriffin.github.io/ai-study-tools/k12-verifier/>
 - 教材辅导 · 学序：<https://jerrygriffin.github.io/ai-study-tools/textbook-tutor/>
 
-## 下载预览版
+## 下载
 
-<https://github.com/JerryGriffin/ai-study-tools/releases/tag/v1.3.0>
+**暂不提供下载。**
 
-v1.3.0 为预览版（Preview）；目前所有版本均为预览版，暂不设正式稳定版。
-
-完整版支持 Kilo / OpenCode 免费模型、多路独立求解、SymPy 校验、模型交叉复核和本地服务。
+目前所有版本均为预览版（Preview），暂不设正式稳定版。
 
 ## 许可
 

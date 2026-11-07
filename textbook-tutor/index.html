@@ -1,8 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>教材辅导 · 学序</title>
 <link rel="stylesheet" href="style.css?v=1.3.0">
 </head>
@@ -62,7 +65,7 @@
       <label class="lbl">接口地址</label>
       <input id="apiBase" type="text" placeholder="https://api.kilo.ai/api/gateway" autocomplete="off">
       <label class="lbl">API Key（可留空）</label>
-      <input id="apiKey" type="password" placeholder="免费模型无需填写" autocomplete="off">
+      <input id="apiKey" type="password" placeholder="在线模型无需填写" autocomplete="off">
       <label class="lbl">模型名</label>
       <input id="apiModel" type="text" placeholder="kilo-auto/free" autocomplete="off">
       <div class="row">
@@ -70,7 +73,7 @@
         <button class="btn ghost" id="clearApi">恢复默认</button>
       </div>
       <p class="hint" id="apiStatus">未配置：返回检索演示模式</p>
-      <p class="hint">本地默认 Kilo 免费；GitHub Pages 固定 Pollinations 免费模型。</p>
+      <p class="hint">本地默认 Kilo；GitHub Pages 固定 Pollinations 模型。</p>
     </details>
   </div>
 
@@ -152,7 +155,7 @@
 
 <script src="knowledge.js?v=1.3.0"></script>
 <script src="trends.js?v=1.3.0"></script>
-<script src="app.js?v=1.3.0"></script>
+<script src="app.js?v=1.3.1"></script>
 <script>
 (function () {
   function click(id) { var el = document.getElementById(id); if (el) el.click(); }

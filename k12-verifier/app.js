@@ -1,4 +1,4 @@
-/* ===========================================================
+﻿/* ===========================================================
    作业校验台 · K12 Homework Lab
    Verification-first homework workspace.
    =========================================================== */
@@ -18,8 +18,8 @@
 
   const PRESETS = [
     { id: 'demo', label: '本地示例', base: '', model: '', hint: '不调用模型，体验内置题库' },
-    { id: 'kilo', label: 'Kilo 免费', base: 'https://api.kilo.ai/api/gateway', model: 'kilo-auto/free', hint: '免 Key，推荐' },
-    { id: 'opencode', label: 'OpenCode 免费', base: 'opencode', model: 'opencode/deepseek-v4.1-flash-free', hint: '使用本机 OpenCode 免费模型' },
+    { id: 'kilo', label: 'Kilo', base: 'https://api.kilo.ai/api/gateway', model: 'kilo-auto/free', hint: '免 Key，推荐' },
+    { id: 'opencode', label: 'OpenCode 本机', base: 'opencode', model: 'opencode/deepseek-v4.1-flash-free', hint: '使用本机 OpenCode 本机模型' },
     { id: 'pollinations', label: 'Pollinations', base: 'https://text.pollinations.ai/openai', model: 'openai', hint: '免 Key，约 45 秒限 1 次' },
     { id: 'vllm', label: 'Qwen Math · vLLM', base: 'http://127.0.0.1:8000/v1', model: 'qwen2.5-math-7b-instruct', hint: '推荐：数学专用模型' },
     { id: 'omni', label: 'OmniEdu · vLLM', base: 'http://127.0.0.1:8000/v1', model: 'omniedu-9b', hint: 'Omni-Edu 9B' },
@@ -389,7 +389,7 @@
       statusBtn.classList.add('demo');
       statusBtn.classList.remove('online');
       statusText.textContent = 'Pollinations 在线演示';
-      statusBtn.title = 'GitHub Pages 在线演示：单路免费模型 + 浏览器内 SymPy 校验；匿名限速。';
+      statusBtn.title = 'GitHub Pages 在线演示：单路在线模型 + 浏览器内 SymPy 校验；匿名限速。';
       statusBtn.setAttribute('aria-label', '模型连接状态：Pollinations 在线演示');
       return;
     }
@@ -1176,7 +1176,7 @@
 
   async function staticSolve(question) {
     const started = Date.now();
-    addStage({ id: 'static-model', label: '调用免费模型', detail: 'Pollinations · 单路求解', progress: 18 });
+    addStage({ id: 'static-model', label: '调用在线模型', detail: 'Pollinations · 单路求解', progress: 18 });
     const response = await fetch('https://text.pollinations.ai/openai/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1210,7 +1210,7 @@
       const match = content.match(/(?:最终答案|答案)\s*[:：]\s*([^\n]+)/);
       finalAnswer = match ? match[1].trim() : content.trim().split('\n').slice(-1)[0] || '';
     }
-    if (!finalAnswer) throw new Error('免费模型没有返回可识别的答案。');
+    if (!finalAnswer) throw new Error('在线模型没有返回可识别的答案。');
     const answerType = String(data.answer_type || 'text').toLowerCase();
     const answerPlain = String(data.answer_plain || finalAnswer).trim();
     const steps = Array.isArray(data.steps) ? data.steps.map(String) : [];
@@ -1283,7 +1283,7 @@
       critic: null,
       demo: false,
       static: true,
-      verificationNote: 'GitHub Pages 在线演示：单路免费模型 + 浏览器内 SymPy 校验；没有多路一致与模型复核，网络限速时请稍后重试。',
+      verificationNote: 'GitHub Pages 在线演示：单路在线模型 + 浏览器内 SymPy 校验；没有多路一致与模型复核，网络限速时请稍后重试。',
       elapsedMs: Date.now() - started
     };
   }
@@ -1464,7 +1464,7 @@
 
   function openSettings() {
     if (state.publicMode || state.staticMode) {
-      toast('在线演示已固定使用免费模型，无需配置');
+      toast('在线演示固定使用 Pollinations，无需配置');
       return;
     }
     populateSettingsForm();

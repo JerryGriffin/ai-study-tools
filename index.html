@@ -38,6 +38,7 @@
     .brand { font-size: 12px; font-weight: 750; letter-spacing: 0.16em; color: var(--blue); }
     .nav a { color: var(--ink-2); text-decoration: none; font-size: 12.5px; border: 1px solid var(--line); background: rgba(255,255,255,.72); padding: 7px 12px; border-radius: 8px; }
     .nav a:hover { background: #fff; }
+    .nav-note { font-size: 12px; color: var(--muted); }
     h1 { margin: 0; font-size: clamp(32px, 4.8vw, 50px); line-height: 1.12; letter-spacing: -0.035em; }
     h1 em { font-style: normal; background: linear-gradient(100deg, var(--blue), var(--teal)); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .lede { max-width: 650px; margin: 16px 0 0; color: var(--muted); font-size: 14.5px; line-height: 1.85; }
@@ -65,6 +66,7 @@
     .meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 26px; }
     .meta p { margin: 0; color: var(--muted); font-size: 11px; max-width: 660px; }
     .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px; border-radius: 9px; background: var(--ink); color: #fff; text-decoration: none; font-size: 12px; font-weight: 600; white-space: nowrap; }
+    .btn.off { background: #e5e7eb; color: #6b7280; cursor: not-allowed; }
     footer { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10.5px; line-height: 1.8; }
     footer a { color: var(--ink-2); }
     @media (max-width: 860px) {
@@ -81,13 +83,13 @@
   <main class="wrap">
     <nav class="nav">
       <span class="brand">AI STUDY TOOLS</span>
-      <a href="https://github.com/JerryGriffin/ai-study-tools/releases/tag/v1.3.0">下载预览版</a>
+      <span class="nav-note">完整版暂不提供下载</span>
     </nav>
 
     <h1>先把题做对，<br /><em>再把方法留下。</em></h1>
     <p class="lede">
       三个面向学生的 AI 学习工具：高数答疑、作业校验、教材章节辅导。
-      在线直接用；下载完整版可接入 Kilo / OpenCode 免费模型与本地后端。
+      在线直接使用。
     </p>
 
     <div class="grid">
@@ -95,7 +97,7 @@
         <div class="card-body">
           <h2>高数答疑室</h2>
           <p>大学高等数学 AI 助教：引导式 / 精讲 / 速解，公式、练习、错题本。</p>
-          <div class="tags"><span class="tag">在线可用</span><span class="tag green">免费模型</span><span class="tag">图片 OCR</span></div>
+          <div class="tags"><span class="tag">在线可用</span><span class="tag">图片 OCR</span></div>
           <span class="open">打开</span>
         </div>
       </a>
@@ -113,15 +115,15 @@
         <div class="card-body">
           <h2>教材辅导 · 学序</h2>
           <p>39 种教材 / 197 章 / 1130 道练习：按章查看讲解与练习，AI 辅导带引用。</p>
-          <div class="tags"><span class="tag">在线可用</span><span class="tag green">免费模型</span><span class="tag">教材章节</span></div>
+          <div class="tags"><span class="tag">在线可用</span><span class="tag">教材章节</span></div>
           <span class="open">打开</span>
         </div>
       </a>
     </div>
 
     <div class="note">
-      <strong>在线说明：</strong>使用 Pollinations 免费模型，匿名约 45 秒限 1 次；作业校验台的示例题带完整校验报告。
-      图片识别与 OCR 可能有误，请先核对识别文本。完整版支持 Kilo / OpenCode 免费模型、多路复核和图片视觉识别。
+      <strong>在线说明：</strong>使用 Pollinations 在线模型，匿名约 45 秒限 1 次；作业校验台的示例题带完整校验报告。
+      图片识别与 OCR 可能有误，请先核对识别文本。本地模型接入、多路复核和图片视觉识别仅在本地完整版中提供；暂不提供下载。
       <strong>版本：</strong>目前所有版本均为预览版（Preview），暂不设正式稳定版。
     </div>
 
@@ -130,15 +132,15 @@
         专有许可 · All Rights Reserved，仅限个人非商业学习使用；禁止复制、修改、分发、商用或部署为服务。
         第三方组件（KaTeX、Tesseract.js、OCR 语言数据、edu-llm）仍适用各自许可证。
       </p>
-      <a class="btn" href="https://github.com/JerryGriffin/ai-study-tools/releases/tag/v1.3.0">下载 v1.3.0 Preview</a>
+      <span class="btn off">暂不提供下载</span>
     </div>
 
     <footer>
-      在线演示使用第三方免费网关，可能限流或调整模型；不承诺 100% 正确。重要作业请自行核对。<br />
+      在线演示使用第三方网关，可能限流或调整模型；不承诺 100% 正确。重要作业请自行核对。<br />
       © 2026 JerryGriffin. All rights reserved. ·
       <a href="https://github.com/JerryGriffin/ai-study-tools/blob/main/LICENSE">许可条款</a> ·
       <a href="https://github.com/JerryGriffin/ai-study-tools/blob/main/THIRD-PARTY-NOTICES.md">第三方说明</a> ·
-      页面版本 v1.3.0-preview.3（无预览图）
+      页面版本 v1.3.0-preview.4（无预览图）
     </footer>
   </main>
 </body>

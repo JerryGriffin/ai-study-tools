@@ -1,4 +1,4 @@
-/* ===========================================================
+﻿/* ===========================================================
    高数答疑室 · Calculus Studio
    A local-first calculus tutoring workspace.
    =========================================================== */
@@ -56,8 +56,8 @@
   };
 
   const PRESETS = [
-    { id: 'kilo', label: 'Kilo 免费', base: '/api', model: 'kilo-auto/free', hint: '免 Key，推荐（先运行 python serve.py）' },
-    { id: 'opencode', label: 'OpenCode 免费', base: '/api', model: 'opencode/deepseek-v4.1-flash-free', hint: '使用本机 OpenCode 免费模型' },
+    { id: 'kilo', label: 'Kilo', base: '/api', model: 'kilo-auto/free', hint: '免 Key，推荐（先运行 python serve.py）' },
+    { id: 'opencode', label: 'OpenCode 本机', base: '/api', model: 'opencode/deepseek-v4.1-flash-free', hint: '使用本机 OpenCode 本机模型' },
     { id: 'pollinations', label: 'Pollinations', base: 'https://text.pollinations.ai/openai', model: 'openai', hint: '免 Key，匿名限速' },
     { id: 'proxy', label: '自定义代理', base: '/api', model: 'omniedu-4b', hint: '先运行 python serve.py' },
     { id: 'vllm', label: 'OmniEdu · vLLM', base: 'http://127.0.0.1:8000/v1', model: 'omniedu-4b', hint: 'OpenAI 兼容接口' },
@@ -1124,7 +1124,7 @@
       statusBtn.classList.add('demo');
       statusBtn.classList.remove('online');
       statusText.textContent = 'Pollinations 在线演示';
-      statusBtn.title = 'GitHub Pages 在线演示：Pollinations 免费模型，匿名约 45 秒限 1 次。';
+      statusBtn.title = 'GitHub Pages 在线演示：Pollinations 模型，匿名约 45 秒限 1 次。';
       statusBtn.setAttribute('aria-label', '模型连接状态：Pollinations 在线演示');
       return;
     }
@@ -1774,11 +1774,11 @@
 
   function openSettings() {
     if (state.staticMode) {
-      toast('在线演示已固定使用 Pollinations 免费模型；完整版可下载本地运行');
+      toast('在线演示固定使用 Pollinations 模型');
       return;
     }
     if (state.publicMode) {
-      toast('公共服务已固定使用 Kilo 免费模型，无需配置');
+      toast('公共服务已固定使用 Kilo 模型，无需配置');
       return;
     }
     setBaseUrl.value = state.settings.baseUrl || '';
@@ -2522,7 +2522,7 @@
       // Images are still supported: static mode OCRs them locally into text.
       const imageButton = document.querySelector('#imageBtn');
       if (imageButton) imageButton.title = '上传题目图片，浏览器内 OCR 识别为文字（识别结果可编辑）';
-      toast('在线演示：Pollinations 免费模型（约 45 秒限 1 次）');
+      toast('在线演示：Pollinations 模型（约 45 秒限 1 次）');
       return true;
     }
     try {
@@ -2551,7 +2551,7 @@
       persist();
       renderStatus();
       renderAll();
-      toast('已连接免费模型 · ' + model);
+      toast('已连接模型 · ' + model);
       return true;
     } catch (err) {
       return false;

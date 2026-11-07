@@ -1,4 +1,4 @@
-/* 学序 v0.4.0 — DeepSeek 风格教材锚定辅导工作台
+﻿/* 学序 v0.4.0 — DeepSeek 风格教材锚定辅导工作台
    设计参考：OmniEdu（教学指令分类、课程锚定、错因诊断）
              DeepTutor（可溯源 RAG、版本化来源、错题与掌握度）
    命题依据：data/exam_trends.json（近五年趋势调研摘要，不转载试卷原文）
@@ -414,7 +414,7 @@
       } else parts.push(d.text.slice(0, 400));
       return parts.join('\n');
     }).join('\n\n');
-    return head + '\n' + body + '\n\n下一步：稍后重试免费模型，或在顶栏「设置」接入自定义模型，即可生成教学回应。';
+    return head + '\n' + body + '\n\n下一步：稍后重试在线模型，或在顶栏「设置」接入自定义模型，即可生成教学回应。';
   }
   async function callModel(q, hits) {
     var mode = MODES.filter(function (m) { return m.id === state.mode; })[0];
@@ -492,7 +492,7 @@
       } catch (e) {
         var reason = String(e && e.message ? e.message : e);
         if (/FREE_LIMIT|Free limit|限速|402/i.test(reason)) {
-          reason = '免费模型被限速（约 45 秒 1 次），请稍后重试';
+          reason = '在线模型被限速（约 45 秒 1 次），请稍后重试';
         }
         addMsg('sys', '模型调用失败：' + esc(reason) + '。已降级为检索片段，不伪造回答。');
         addMsg('ai', esc(demoAnswer(q, hits)));
@@ -580,7 +580,7 @@
     addMsg('sys', '学序：' + (st0.textbooks || 0) + ' 种教材 / ' +
       (st0.chapters || 0) + ' 章 / ' + (st0.nodes || state.docs.length) + ' 个知识点 / ' + (st0.questions || 0) + ' 道练习。' +
       '<h4>怎么用</h4>直接提问，或点顶栏「教材章节」按章查看讲解与练习。内容为书目骨架与本项目自撰讲解，不含教材、教辅、真题原文。' +
-      (STATIC_HOST ? '<h4>在线演示</h4>使用 Pollinations 免费模型，匿名约 45 秒限 1 次；失败时会降级为检索片段，不伪造回答。' : ''));
+      (STATIC_HOST ? '<h4>在线演示</h4>使用 Pollinations 模型，匿名约 45 秒限 1 次；失败时会降级为检索片段，不伪造回答。' : ''));
 
     $('quickRow').innerHTML = [
       '导数为零一定是极值点吗？', '新定义题该从哪里下手', '帮我讲讲化学平衡的移动'
@@ -610,7 +610,7 @@
       $('apiBase').value = state.api.base;
       $('apiKey').value = '';
       $('apiModel').value = state.api.model;
-      updateBadge(); setStatus('已恢复默认免费模型');
+      updateBadge(); setStatus('已恢复默认模型');
     };
     $('apiPreset').onchange = function () {
       var p = PRESETS[this.value];
@@ -659,11 +659,11 @@
     var b = $('modeBadge');
     if (STATIC_HOST) {
       b.textContent = 'Pollinations 在线演示';
-      $('apiStatus').textContent = '在线演示固定使用 Pollinations 免费模型';
+      $('apiStatus').textContent = '在线演示固定使用 Pollinations 模型';
       return;
     }
     if (state.api && state.api.model) {
-      b.textContent = (state.api.key ? '模型已接入 · ' : '免费模型 · ') + state.api.model;
+      b.textContent = (state.api.key ? '模型已接入 · ' : '在线模型 · ') + state.api.model;
       $('apiStatus').textContent = '当前：' + state.api.model + (state.api.key ? '' : '（无需 Key）');
     } else {
       b.textContent = '检索演示模式';
