@@ -1306,6 +1306,7 @@
     const session = currentSession();
     const hasMessages = !!(session && session.messages.length);
     welcome.hidden = hasMessages;
+    document.body.classList.toggle('has-chat', hasMessages);
     messageList.innerHTML = '';
     if (!hasMessages) {
       renderWelcome();

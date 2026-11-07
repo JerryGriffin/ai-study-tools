@@ -313,3 +313,7 @@ body.in-chat .chatwrap{display:flex}
 }
 .back-home:hover { background: var(--soft, #f7f8f9); }
 .send { flex: 0 0 auto; white-space: nowrap; min-width: 78px; justify-content: center; }
+/* 初始页与作业校验台对齐 */
+.welcome { align-items: flex-start; padding: 42px 24px 24px; }
+.welcome-inner { max-width: 860px; }
+.examples { display: none !important; }

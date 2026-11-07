@@ -3050,3 +3050,20 @@ svg {
 .back-home:hover { background: var(--paper-soft, #f8fafc); }
 #menuBtn { display: none !important; }
 .message-tools { display: none !important; }
+/* 初始页：对话框放在标题下方，居中，与作业校验台一致 */
+body:not(.has-chat) .chat-scroll {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+body:not(.has-chat) .welcome {
+  padding: 10vh 28px 22px;
+}
+body:not(.has-chat) .composer-shell {
+  padding: 0 28px 18px;
+  background: transparent;
+}
+body:not(.has-chat) .end-spacer {
+  display: none;
+}
+.welcome-inner { animation: none !important; }
+body:not(.has-chat) .welcome { padding-top: calc(10vh + 36px); }
