@@ -7,13 +7,14 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>教材辅导 · 学序</title>
-<link rel="stylesheet" href="style.css?v=1.3.0">
+<link rel="stylesheet" href="style.css?v=1.3.1">
 </head>
 <body>
 <div class="app" id="app">
 
   <main class="main">
     <header class="topbar clean-top">
+      <a class="back-home" href="../" title="返回主页" aria-label="返回主页">←</a>
       <div class="brand">教材辅导 <span>学序</span></div>
       <div class="top-title" id="coverageLine"></div>
       <div class="top-actions">
@@ -30,8 +31,11 @@
         <h1>教材辅导</h1>
         <p class="wsub">高中数理化 · 大学理工</p>
         <div class="askbox">
-          <textarea id="inputWelcome" rows="2" placeholder="问一道题、一个概念，或贴上你的错误解答…"></textarea>
-          <button class="send" id="sendWelcome" title="发送">↑</button>
+          <textarea id="inputWelcome" rows="2" placeholder="输入题目或概念…"></textarea>
+          <div class="askbox-foot">
+            <span class="ask-hint">Enter 发送</span>
+            <button class="send" id="sendWelcome" title="发送"><span>发送</span><span aria-hidden="true">↑</span></button>
+          </div>
         </div>
         <div class="examples" id="quickRow"></div>
       </div>
@@ -40,12 +44,14 @@
     <section class="chatwrap" id="chatwrap">
       <div id="chat" class="chat"></div>
       <div class="composer">
-        <div class="modechips" id="modeChips"></div>
         <div class="askbox bottom">
-          <textarea id="input" rows="2" placeholder="输入题目或概念…（Enter 发送，Shift+Enter 换行）"></textarea>
-          <button class="send" id="sendBtn" title="发送">↑</button>
+          <div class="modechips" id="modeChips"></div>
+          <textarea id="input" rows="2" placeholder="输入题目或概念…"></textarea>
+          <div class="askbox-foot">
+            <span class="ask-hint" id="statusLine">就绪</span>
+            <button class="send" id="sendBtn" title="发送"><span>发送</span><span aria-hidden="true">↑</span></button>
+          </div>
         </div>
-        <div class="composer-foot"><span class="hint" id="statusLine">就绪</span></div>
       </div>
     </section>
   </main>
@@ -154,7 +160,7 @@
 
 <script src="knowledge.js?v=1.3.0"></script>
 <script src="trends.js?v=1.3.0"></script>
-<script src="app.js?v=1.3.3"></script>
+<script src="app.js?v=1.3.4"></script>
 <script>
 (function () {
   function click(id) { var el = document.getElementById(id); if (el) el.click(); }

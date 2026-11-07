@@ -8,7 +8,7 @@
   <title>高数答疑室 · 大学高等数学 AI 助教</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f6b5c'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' fill='%23f6f2e9' text-anchor='middle'%3E%E2%88%91%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="vendor/katex/katex.min.css" />
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css?v=11" />
 </head>
 <body>
   <svg class="svg-sprite" aria-hidden="true" focusable="false">
@@ -39,6 +39,7 @@
 
   <div class="app" id="app">
     <header class="topbar">
+      <a class="back-home" href="../" title="返回主页" aria-label="返回主页">←</a>
       <button class="icon-btn menu-btn" id="menuBtn" aria-label="打开章节菜单" title="章节菜单">
         <svg class="icon"><use href="#i-menu"></use></svg>
       </button>
@@ -137,13 +138,15 @@
         <div class="composer-shell">
           <div class="composer" id="composer">
             <div class="pending-images" id="pendingImages" hidden></div>
-            <textarea id="input" rows="1" maxlength="8000" placeholder="输入题目或卡点…"></textarea>
-            <div class="composer-row">
+            <div class="composer-top">
               <div class="mode-group" id="modeGroup" role="group" aria-label="回答模式">
                 <button type="button" class="mode-btn active" data-mode="guide">引导式</button>
                 <button type="button" class="mode-btn" data-mode="explain">精讲</button>
                 <button type="button" class="mode-btn" data-mode="exam">速解</button>
               </div>
+            </div>
+            <textarea id="input" rows="2" maxlength="8000" placeholder="输入题目或卡点…"></textarea>
+            <div class="composer-row">
               <div class="composer-tools">
                 <button type="button" class="tool-btn" id="formulaBtn" title="插入公式">
                   <svg class="icon"><use href="#i-sigma"></use></svg>
@@ -151,11 +154,12 @@
                 <button type="button" class="tool-btn" id="imageBtn" title="上传题目截图">
                   <svg class="icon"><use href="#i-image"></use></svg>
                 </button>
-                <button type="button" class="send-btn" id="sendBtn" title="发送" aria-label="发送">
-                  <svg class="icon send-icon"><use href="#i-send"></use></svg>
-                  <svg class="icon stop-icon"><use href="#i-stop"></use></svg>
-                </button>
               </div>
+              <button type="button" class="send-btn" id="sendBtn" title="发送" aria-label="发送">
+                <span class="send-label">发送</span>
+                <svg class="icon send-icon"><use href="#i-send"></use></svg>
+                <svg class="icon stop-icon"><use href="#i-stop"></use></svg>
+              </button>
             </div>
             <div class="formula-pop" id="formulaPop" hidden></div>
           </div>
@@ -334,6 +338,6 @@
 
   <script src="vendor/katex/katex.min.js" defer></script>
   <script src="data.js" defer></script>
-  <script src="app.js?v=11" defer></script>
+  <script src="app.js?v=12" defer></script>
 </body>
 </html>

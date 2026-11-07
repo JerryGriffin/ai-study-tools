@@ -2996,3 +2996,56 @@ svg {
 .welcome h1 { font-size: clamp(30px, 4vw, 44px); }
 .welcome .lede { margin-top: 10px; }
 .welcome h1 { color: var(--ink, #1c2126); }
+/* 统一对话框格式（以作业校验台为标准） */
+.composer {
+  max-width: 860px;
+  padding: 14px 16px 12px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(20, 35, 70, 0.07);
+}
+.composer-top { margin-bottom: 8px; }
+.composer textarea {
+  min-height: 54px;
+  font-size: 15px;
+  line-height: 1.7;
+  padding: 2px 2px 8px;
+}
+.mode-group { background: transparent; padding: 0; gap: 6px; }
+.mode-btn {
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 5px 12px;
+  background: var(--card);
+  color: var(--muted);
+  font-size: 12px;
+}
+.mode-btn.active {
+  background: linear-gradient(135deg, #2563eb, #0d9488);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: none;
+}
+.send-btn {
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #0d9488);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+.send-btn .send-icon { width: 15px; height: 15px; }
+.send-btn .stop-icon { width: 14px; height: 14px; }
+.composer-foot { display: none; }
+.back-home {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  color: var(--ink-soft, #334155); text-decoration: none; font-size: 18px;
+  border: 1px solid var(--line, #e2e8f0); background: var(--card, #fff);
+}
+.back-home:hover { background: var(--paper-soft, #f8fafc); }
+#menuBtn { display: none !important; }

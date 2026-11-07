@@ -265,3 +265,51 @@ body.in-chat .chatwrap{display:flex}
   .top-actions{order:3;flex-basis:100%;margin:2px 0 0;justify-content:flex-start}
   .clean-top .top-title{order:4;flex-basis:100%;margin-top:2px}
 }
+/* 统一对话框格式（以作业校验台为标准） */
+.askbox {
+  display: block;
+  max-width: 860px;
+  padding: 14px 16px 12px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(20, 35, 70, 0.07);
+}
+.askbox textarea {
+  display: block;
+  width: 100%;
+  min-height: 54px;
+  padding: 0 0 8px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.askbox-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+.ask-hint { font-size: 11px; color: var(--muted); }
+.modechips { max-width: none; margin: 0 0 8px; padding: 0; }
+.send {
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb, #0d9488);
+  font-size: 13px;
+  font-weight: 600;
+}
+.send:hover { background: linear-gradient(135deg, #1d4ed8, #0f766e); }
+.composer { padding: 0 0 10px; max-width: 860px; margin: 0 auto; width: 100%; }
+.back-home {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  color: var(--ink-2, #374151); text-decoration: none; font-size: 18px;
+  border: 1px solid var(--line, #e5e9f0); background: var(--card, #fff);
+}
+.back-home:hover { background: var(--soft, #f7f8f9); }
+.send { flex: 0 0 auto; white-space: nowrap; min-width: 78px; justify-content: center; }
