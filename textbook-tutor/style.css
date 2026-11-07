@@ -317,3 +317,19 @@ body.in-chat .chatwrap{display:flex}
 .welcome { align-items: flex-start; padding: 42px 24px 24px; }
 .welcome-inner { max-width: 860px; }
 .examples { display: none !important; }
+a:focus-visible,
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+@media (max-width: 520px) {
+  .clean-top { padding: 8px 10px; }
+  .back-home { width: 30px; height: 30px; font-size: 16px; }
+  .topbtn { padding: 5px 9px; font-size: 12px; }
+  .settings-pop { top: 94px; }
+}
+.askbox textarea { min-height: 100px; }
+.askbox { padding: 16px 16px 12px; }

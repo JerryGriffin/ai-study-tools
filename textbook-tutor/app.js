@@ -134,10 +134,14 @@
 
   /* ---------- 渲染 ---------- */
   function renderModes() {
-    $('modeChips').innerHTML = MODES.map(function (m) {
+    var html = MODES.map(function (m) {
       return '<button class="chip' + (m.id === state.mode ? ' active' : '') + '" data-mode="' + m.id + '">' +
         esc(m.name) + '</button>';
     }).join('');
+    ['modeChips', 'modeChipsWelcome'].forEach(function (id) {
+      var el = $(id);
+      if (el) el.innerHTML = html;
+    });
     Array.prototype.forEach.call(document.querySelectorAll('.chip'), function (b) {
       b.onclick = function () {
         state.mode = b.dataset.mode; renderModes();

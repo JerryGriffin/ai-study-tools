@@ -2670,3 +2670,23 @@ body:has(#errorCard:not([hidden])) .sample-block {
   border: 1px solid var(--line, #e2e8f0); background: var(--card, #fff);
 }
 .back-home:hover { background: var(--paper-soft, #f8fafc); }
+a:focus-visible,
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+@media (max-width: 520px) {
+  .topbar { gap: 8px; padding: 8px 10px; }
+  .brand-text strong { font-size: 15px; }
+  .back-home { width: 30px; height: 30px; font-size: 16px; }
+  .status-pill { padding: 4px 9px; font-size: 11px; }
+  .settings-btn span { display: none; }
+}
+body { background: #ffffff; }
+body::before { background: #ffffff; }
+body::after { display: none; }
+.status-pill.online .status-dot { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14); }
+.status-pill.demo .status-dot { background: #94a3b8; }

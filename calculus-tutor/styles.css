@@ -3067,3 +3067,32 @@ body:not(.has-chat) .end-spacer {
 }
 .welcome-inner { animation: none !important; }
 body:not(.has-chat) .welcome { padding-top: calc(10vh + 36px); }
+/* 白色背景，与另外两个工具保持一致 */
+:root {
+  --paper: #ffffff;
+  --paper-soft: #ffffff;
+  --paper-deep: #f4f6f8;
+  --card: #ffffff;
+  --grid: transparent;
+}
+body::before { background: #ffffff; }
+.main {
+  background: #ffffff;
+  background-image: none;
+}
+a:focus-visible,
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+@media (max-width: 520px) {
+  .topbar { gap: 8px; padding: 8px 10px; }
+  .brand-text strong { font-size: 15px; }
+  .back-home { width: 30px; height: 30px; font-size: 16px; }
+  .model-status { padding: 4px 9px; font-size: 11px; }
+}
+.composer textarea { min-height: 100px; }
+.composer { padding: 16px 16px 12px; }
