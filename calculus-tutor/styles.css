@@ -3049,3 +3049,4 @@ svg {
 }
 .back-home:hover { background: var(--paper-soft, #f8fafc); }
 #menuBtn { display: none !important; }
+.message-tools { display: none !important; }
