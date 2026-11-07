@@ -26,6 +26,16 @@
 - 许可证全文：`ocr/LICENSE`。
 - 上游项目：<https://github.com/tesseract-ocr/tessdata_fast>
 
+## edu-llm / 学序（教材辅导模块）
+
+- 用途：教材章节浏览、知识点检索与辅导界面。
+- 位置：`textbook-tutor/`。
+- 来源：<https://github.com/Hex1um/edu-llm>
+- 许可证：MIT License。
+- 版权：Copyright (c) 2026 edu-llm contributors。
+- 许可证全文与修改说明：`textbook-tutor/LICENSE`、`textbook-tutor/NOTICE.md`。
+- 说明：该目录中源自 edu-llm 的代码与内容仍按 MIT 提供；AI Study Tools 的其他部分仍为专有许可。
+
 ## 第三方模型与服务
 
 Kilo、Pollinations、OpenCode 以及任何用户自行配置的 OpenAI 兼容服务均为独立第三方服务，适用其各自的服务条款与隐私政策。本项目不重新分发这些服务的模型权重。
