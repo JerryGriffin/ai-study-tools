@@ -934,6 +934,130 @@ def check_unit(question: str, answer: NormalizedAnswer) -> dict | None:
     return _check("单位格式", "skip", "答案未包含单位，需人工确认", "weak")
 
 
+def _answer_numeric(answer: NormalizedAnswer):
+    """Best-effort numeric value, tolerating a trailing unit (e.g. 20m)."""
+    value = answer.value
+    if isinstance(value, (int, float, sp.Number, sp.Rational)):
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+    match = re.match(r"^\s*\$?\s*(-?\d+(?:\.\d+)?)\s*(?:[a-zA-Zμ°]+|米|厘米|千米|克|千克|秒|分钟|小时|焦|瓦|伏|安|摩尔|升)?\s*\$?\s*$", str(answer.raw))
+    if match:
+        return float(match.group(1))
+    return None
+
+
+def _numeric_matches(value, answer: NormalizedAnswer, tol: float = 1e-7) -> bool:
+    got = _answer_numeric(answer)
+    if got is None:
+        return False
+    try:
+        expected = float(value)
+    except (TypeError, ValueError):
+        return False
+    return abs(expected - got) <= tol * max(1.0, abs(expected))
+
+
+def check_geometry(question: str, answer: NormalizedAnswer) -> dict | None:
+    text = latex_to_plain(question)
+    if "直角三角形" not in text and "勾股" not in text:
+        return None
+    match = re.search(
+        r"直角边[^。；;]*?(\d+(?:\.\d+)?)\s*(?:和|与|、|,|，)\s*(\d+(?:\.\d+)?)",
+        text,
+    )
+    if not match:
+        return None
+    a, b = sp.sympify(match.group(1)), sp.sympify(match.group(2))
+    value = sp.sqrt(a ** 2 + b ** 2)
+    if _numeric_matches(value, answer):
+        return _check("勾股定理独立计算", "pass", f"斜边 = {value}")
+    return _check("勾股定理独立计算", "fail", f"独立计算斜边 = {value}；模型答案：{describe_answer(answer)}")
+
+
+def check_sequence(question: str, answer: NormalizedAnswer) -> dict | None:
+    text = latex_to_plain(question)
+    if "等差数列" not in text and "等比数列" not in text:
+        return None
+    first = re.search(r"a[_ ]?1\s*[=:：]\s*(-?\d+(?:\.\d+)?)", text)
+    target = re.search(r"(?:求|计算)\s*a[_ ]?(\d+)", text)
+    if not first or not target:
+        return None
+    n = int(target.group(1))
+    if n < 1:
+        return None
+    if "等差数列" in text:
+        diff = re.search(r"(?:公差|d)\s*[=:：]\s*(-?\d+(?:\.\d+)?)", text)
+        if not diff:
+            return None
+        value = sp.sympify(first.group(1)) + (n - 1) * sp.sympify(diff.group(1))
+        name = "等差数列"
+    else:
+        ratio = re.search(r"(?:公比|q)\s*[=:：]\s*(-?\d+(?:\.\d+)?)", text)
+        if not ratio:
+            return None
+        value = sp.sympify(first.group(1)) * sp.sympify(ratio.group(1)) ** (n - 1)
+        name = "等比数列"
+    if _numeric_matches(value, answer):
+        return _check(f"{name}独立计算", "pass", f"a_{n} = {value}")
+    return _check(f"{name}独立计算", "fail", f"独立计算 a_{n} = {value}；模型答案：{describe_answer(answer)}")
+
+
+def check_trigonometry(question: str, answer: NormalizedAnswer) -> dict | None:
+    match = re.search(r"\b(sin|cos|tan)\s*\(?\s*(-?\d+(?:\.\d+)?)\s*°", str(question), re.IGNORECASE)
+    if not match:
+        text = latex_to_plain(question)
+        match = re.search(
+            r"\b(sin|cos|tan)\s*\(\s*(-?\d+(?:\.\d+)?)\s*\*\s*pi\s*/\s*180\s*\)",
+            text,
+            re.IGNORECASE,
+        )
+    if not match:
+        return None
+    fn, degrees = match.group(1).lower(), float(match.group(2))
+    value = getattr(sp, fn)(sp.pi * sp.Rational(str(degrees)) / 180)
+    value = sp.simplify(value)
+    if answers_equivalent(NormalizedAnswer(str(value), "expression", value), answer):
+        return _check("三角函数特殊值", "pass", f"{fn}({degrees:g}°) = {value}")
+    return _check("三角函数特殊值", "fail", f"独立计算 {fn}({degrees:g}°) = {value}；模型答案：{describe_answer(answer)}")
+
+
+def check_probability(question: str, answer: NormalizedAnswer) -> dict | None:
+    text = latex_to_plain(question)
+    if "骰子" not in text and "骰" not in text:
+        return None
+    favorable = None
+    if "偶数" in text:
+        favorable = 3
+    elif "奇数" in text:
+        favorable = 3
+    else:
+        match = re.search(r"(?:点数|掷出|出现)\s*(?:为|是)?\s*([1-6])\s*(?:点|的)?", text)
+        if match:
+            favorable = 1
+    if favorable is None:
+        return None
+    value = sp.Rational(favorable, 6)
+    if answers_equivalent(NormalizedAnswer(str(value), "number", value), answer):
+        return _check("概率独立计算", "pass", f"概率 = {value}")
+    return _check("概率独立计算", "fail", f"独立计算概率 = {value}；模型答案：{describe_answer(answer)}")
+
+
+def check_physics_formula(question: str, answer: NormalizedAnswer) -> dict | None:
+    text = latex_to_plain(question)
+    if "路程" not in text:
+        return None
+    speed = re.search(r"(\d+(?:\.\d+)?)\s*(?:m/s|米/秒|km/h|千米/小时)", text)
+    time = re.search(r"(\d+(?:\.\d+)?)\s*(?:s|秒|h|小时)", text)
+    if not speed or not time:
+        return None
+    value = float(speed.group(1)) * float(time.group(1))
+    if _numeric_matches(value, answer):
+        return _check("路程公式独立计算", "pass", f"s = vt = {value:g}")
+    return _check("路程公式独立计算", "fail", f"独立计算 s = vt = {value:g}；模型答案：{describe_answer(answer)}")
+
+
 def verify_answer(question: str, raw_answer: str, answer_type: str | None = None, subject: str = "数学") -> dict:
     answer = normalize_answer(raw_answer, answer_type)
     checks: list[dict] = []
@@ -945,6 +1069,10 @@ def verify_answer(question: str, raw_answer: str, answer_type: str | None = None
             check_function,
             check_derivative,
             check_integral,
+            check_geometry,
+            check_sequence,
+            check_trigonometry,
+            check_probability,
             check_choice,
         ):
             try:
@@ -954,6 +1082,9 @@ def verify_answer(question: str, raw_answer: str, answer_type: str | None = None
             if result:
                 checks.append(result)
     else:
+        formula = check_physics_formula(question, answer)
+        if formula:
+            checks.append(formula)
         result = check_unit(question, answer)
         if result:
             checks.append(result)

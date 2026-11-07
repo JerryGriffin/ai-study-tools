@@ -101,7 +101,7 @@
   ],
   "results": {
     "demo-001": {
-      "id": "cf79981a46d6",
+      "id": "80c7b798d1b4",
       "question": "计算：$(-3)^2-2\\times(-4)$。",
       "grade": "初中",
       "subject": "数学",
@@ -163,10 +163,10 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 9
+      "elapsedMs": 5
     },
     "demo-002": {
-      "id": "8f24992c1a96",
+      "id": "83cb104f096f",
       "question": "解方程：$2x+5=13$。",
       "grade": "初中",
       "subject": "数学",
@@ -228,10 +228,10 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 54
+      "elapsedMs": 26
     },
     "demo-003": {
-      "id": "0588479988e8",
+      "id": "d7d99ee52a63",
       "question": "解不等式：$3x-2<7$。",
       "grade": "初中",
       "subject": "数学",
@@ -293,10 +293,10 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 142
+      "elapsedMs": 71
     },
     "demo-004": {
-      "id": "ae1fc4cf26db",
+      "id": "7769e96b9d73",
       "question": "化简：$(x+2)^2-x(x+4)$。",
       "grade": "初中",
       "subject": "数学",
@@ -358,10 +358,10 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 10
+      "elapsedMs": 5
     },
     "demo-005": {
-      "id": "242fdc245004",
+      "id": "691fc56a1ef9",
       "question": "解方程：$x^2-5x+6=0$。",
       "grade": "初中",
       "subject": "数学",
@@ -424,10 +424,10 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 7
+      "elapsedMs": 5
     },
     "demo-006": {
-      "id": "2c4ed45b15fe",
+      "id": "7f98f4e0ad04",
       "question": "已知 $f(x)=2x+1$，求 $f(3)$。",
       "grade": "初中",
       "subject": "数学",
@@ -487,16 +487,16 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 2
+      "elapsedMs": 1
     },
     "demo-007": {
-      "id": "63502953b65f",
+      "id": "d9e2ce67cf69",
       "question": "一个直角三角形的两条直角边分别为 $6$ 和 $8$，求斜边长。",
       "grade": "初中",
       "subject": "数学",
-      "status": "demo",
-      "statusText": "本地示例",
-      "confidence": 0.78,
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
       "confidenceLabel": "中",
       "finalAnswer": "$10$",
       "answerType": "number",
@@ -514,12 +514,19 @@
         "求出 $c^2=100$ 后忘记开方"
       ],
       "assumptions": [],
-      "checks": [],
+      "checks": [
+        {
+          "name": "勾股定理独立计算",
+          "status": "pass",
+          "detail": "斜边 = 10",
+          "strength": "strong"
+        }
+      ],
       "verification": {
-        "verdict": "none",
-        "independentVerified": false,
+        "verdict": "pass",
+        "independentVerified": true,
         "contradicted": false,
-        "strongCheckCount": 0
+        "strongCheckCount": 1
       },
       "consensus": {
         "total": 1,
@@ -544,10 +551,10 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 0
+      "elapsedMs": 1
     },
     "demo-008": {
-      "id": "f60344814453",
+      "id": "0753ff61b7e5",
       "question": "求函数 $f(x)=x^3-3x$ 的导数。",
       "grade": "高中",
       "subject": "数学",
@@ -608,10 +615,10 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 12
+      "elapsedMs": 7
     },
     "demo-009": {
-      "id": "c8d176eb03c9",
+      "id": "9aa2adb42d62",
       "question": "计算：$\\int_0^1 x^2\\,dx$。",
       "grade": "高中",
       "subject": "数学",
@@ -672,10 +679,10 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 1
+      "elapsedMs": 3
     },
     "demo-010": {
-      "id": "3707a8b21f0d",
+      "id": "2a784b3d5ac9",
       "question": "求 $\\sin 30^\\circ$ 的值。",
       "grade": "高中",
       "subject": "数学",
@@ -726,16 +733,16 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 1
+      "elapsedMs": 0
     },
     "demo-011": {
-      "id": "804d0a0ff271",
+      "id": "97c21ad958a3",
       "question": "等差数列 $\\{a_n\\}$ 中，$a_1=2$，公差 $d=3$，求 $a_{10}$。",
       "grade": "高中",
       "subject": "数学",
-      "status": "demo",
-      "statusText": "本地示例",
-      "confidence": 0.78,
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
       "confidenceLabel": "中",
       "finalAnswer": "$29$",
       "answerType": "number",
@@ -752,12 +759,19 @@
         "代入时算错乘法"
       ],
       "assumptions": [],
-      "checks": [],
+      "checks": [
+        {
+          "name": "等差数列独立计算",
+          "status": "pass",
+          "detail": "a_10 = 29",
+          "strength": "strong"
+        }
+      ],
       "verification": {
-        "verdict": "none",
-        "independentVerified": false,
+        "verdict": "pass",
+        "independentVerified": true,
         "contradicted": false,
-        "strongCheckCount": 0
+        "strongCheckCount": 1
       },
       "consensus": {
         "total": 1,
@@ -782,16 +796,16 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 0
+      "elapsedMs": 1
     },
     "demo-012": {
-      "id": "2ad00b83066f",
+      "id": "1badae725378",
       "question": "掷一枚均匀的骰子，求掷出偶数的概率。",
       "grade": "初中",
       "subject": "数学",
-      "status": "demo",
-      "statusText": "本地示例",
-      "confidence": 0.78,
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
       "confidenceLabel": "中",
       "finalAnswer": "$\\frac12$",
       "answerType": "number",
@@ -809,12 +823,19 @@
         "忘记写最简分数"
       ],
       "assumptions": [],
-      "checks": [],
+      "checks": [
+        {
+          "name": "概率独立计算",
+          "status": "pass",
+          "detail": "概率 = 1/2",
+          "strength": "strong"
+        }
+      ],
       "verification": {
-        "verdict": "none",
-        "independentVerified": false,
+        "verdict": "pass",
+        "independentVerified": true,
         "contradicted": false,
-        "strongCheckCount": 0
+        "strongCheckCount": 1
       },
       "consensus": {
         "total": 1,
@@ -842,7 +863,7 @@
       "elapsedMs": 0
     },
     "demo-013": {
-      "id": "468ceb63605f",
+      "id": "b5786d1c058d",
       "question": "计算：$\\log_2 8$。",
       "grade": "高中",
       "subject": "数学",
@@ -902,16 +923,16 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 0
+      "elapsedMs": 1
     },
     "demo-014": {
-      "id": "0669872be01f",
+      "id": "26b60cd7857c",
       "question": "一辆车以 $5\\,\\text{m/s}$ 的速度匀速行驶 $4\\,\\text{s}$，求行驶路程。",
       "grade": "初中",
       "subject": "物理",
-      "status": "demo",
-      "statusText": "本地示例",
-      "confidence": 0.78,
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
       "confidenceLabel": "中",
       "finalAnswer": "$20\\,\\text{m}$",
       "answerType": "number",
@@ -931,6 +952,12 @@
       "assumptions": [],
       "checks": [
         {
+          "name": "路程公式独立计算",
+          "status": "pass",
+          "detail": "s = vt = 20",
+          "strength": "strong"
+        },
+        {
           "name": "单位格式",
           "status": "skip",
           "detail": "答案未包含单位，需人工确认",
@@ -938,10 +965,10 @@
         }
       ],
       "verification": {
-        "verdict": "skip",
-        "independentVerified": false,
+        "verdict": "pass",
+        "independentVerified": true,
         "contradicted": false,
-        "strongCheckCount": 0
+        "strongCheckCount": 1
       },
       "consensus": {
         "total": 1,
@@ -966,7 +993,7 @@
       "recognizedFromImage": false,
       "recognizedText": null,
       "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
-      "elapsedMs": 1
+      "elapsedMs": 0
     }
   }
 }

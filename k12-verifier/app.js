@@ -1111,7 +1111,7 @@
         indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.28.2/full/'
       });
       await pyodide.loadPackage('sympy');
-      const source = await (await fetch('verifier.py?v=6', { cache: 'no-store' })).text();
+      const source = await (await fetch('verifier.py?v=7', { cache: 'no-store' })).text();
       pyodide.FS.writeFile('/verifier.py', source);
       await pyodide.runPythonAsync("import sys; sys.path.insert(0, '/'); import verifier");
       return pyodide;
