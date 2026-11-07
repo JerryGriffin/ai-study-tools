@@ -2521,7 +2521,6 @@
       // Images are still supported: static mode OCRs them locally into text.
       const imageButton = document.querySelector('#imageBtn');
       if (imageButton) imageButton.title = '上传题目图片，浏览器内 OCR 识别为文字（识别结果可编辑）';
-      toast('在线演示');
       return true;
     }
     try {
