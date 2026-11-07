@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="作业校验台：面向初高中生的可验证做题辅助工具。多路独立求解、符号级校验、分歧时拒绝给出确定答案。" />
+  <meta name="theme-color" content="#f4f6fb" />
+  <title>作业校验台 · K12 Homework Lab</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230f172a'/%3E%3Cpath d='M32 12l15 6v11c0 10-6.5 17.5-15 21-8.5-3.5-15-11-15-21V18l15-6z' fill='none' stroke='%232dd4bf' stroke-width='3.2'/%3E%3Cpath d='M24 32l5.5 5.5L41 26' fill='none' stroke='%23f8fafc' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v5.5c0 5.2-3.4 9.1-8 10.9-4.6-1.8-8-5.7-8-10.9V6l8-3z"/><path d="M8.5 12.2l2.4 2.4 4.8-4.9"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.9 19.3a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.54 15a1.7 1.7 0 0 0-1.56-1.03H2.9a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.54 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.9 4.54h.01A1.7 1.7 0 0 0 9.94 2.98V2.9a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.01a1.7 1.7 0 0 0 1.56 1.03h.09a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.34 5.66"/><path d="M20 4v7h-7"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 15H6L5 6M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <a class="brand" href="#" id="brandBtn" title="回到新题目">
+      <span class="brand-mark"><svg class="icon"><use href="#i-shield"></use></svg></span>
+      <span class="brand-text">
+        <strong>作业校验台</strong>
+        <small>K12 HOMEWORK LAB</small>
+      </span>
+    </a>
+    <div class="topbar-note">
+      <span class="note-dot"></span>
+      <span>先解题 · 再验证 · 后交付</span>
+    </div>
+    <button class="status-pill" id="statusBtn" title="模型连接状态" aria-label="模型连接状态">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">本地示例模式</span>
+    </button>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="themeBtn" title="切换主题" aria-label="切换主题">
+        <svg class="icon theme-sun"><use href="#i-sun"></use></svg>
+        <svg class="icon theme-moon"><use href="#i-moon"></use></svg>
+      </button>
+      <button class="btn ghost settings-btn" id="settingsBtn" aria-label="设置" title="设置">
+        <svg class="icon"><use href="#i-settings"></use></svg>
+        <span>设置</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="left-col" aria-label="题目与历史">
+      <div class="hero">
+        <p class="eyebrow"><span class="pulse-dot"></span> VERIFICATION-FIRST TUTOR</p>
+        <h1>先解题，再验证，<br /><em>最后才给答案。</em></h1>
+        <p class="lede">
+          多路独立求解、符号级校验、交叉复核。证据不足时，系统会明确告诉你「需要核对」，
+          而不是自信地给一个可能错误的答案。
+        </p>
+      </div>
+
+      <div class="input-card">
+        <div class="scope-row">
+          <div class="segmented" id="gradeGroup" role="group" aria-label="学段">
+            <button class="segment active" data-grade="初中">初中</button>
+            <button class="segment" data-grade="高中">高中</button>
+          </div>
+          <div class="segmented" id="subjectGroup" role="group" aria-label="学科">
+            <button class="segment active" data-subject="数学">数学</button>
+            <button class="segment" data-subject="物理">物理</button>
+            <button class="segment" data-subject="化学">化学</button>
+          </div>
+          <span class="scope-hint" id="scopeHint">数学支持符号级校验</span>
+        </div>
+
+        <label class="sr-only" for="questionInput">输入题目</label>
+        <textarea id="questionInput" rows="4" maxlength="4000" placeholder="输入题目，例如：解方程 2x+5=13；也可以上传题目照片。"></textarea>
+
+        <div class="pending-images" id="pendingImages" hidden></div>
+
+        <div class="input-foot">
+          <div class="input-tools">
+            <button class="tool-btn" id="imageBtn" title="上传题目截图">
+              <svg class="icon"><use href="#i-image"></use></svg>
+              <span>上传题目</span>
+            </button>
+            <span class="input-hint">支持 LaTeX · 公式可混排</span>
+          </div>
+          <button class="solve-btn" id="solveBtn">
+            <span class="solve-icon"><svg class="icon"><use href="#i-spark"></use></svg></span>
+            <span class="solve-label">开始解题</span>
+            <svg class="icon solve-stop"><use href="#i-stop"></use></svg>
+            <kbd>Ctrl ↵</kbd>
+          </button>
+        </div>
+      </div>
+
+      <div class="sample-block">
+        <div class="sample-head"><span>没有题目？试试示例</span><span class="sample-note">本地题库 · 不调用模型</span></div>
+        <div class="sample-chips" id="sampleChips"></div>
+      </div>
+
+      <div class="history-card">
+        <div class="section-head">
+          <span>最近记录</span>
+          <button class="link-btn" id="clearHistoryBtn">清空</button>
+        </div>
+        <div class="history-list" id="historyList"></div>
+      </div>
+
+      <p class="left-footnote">
+        <svg class="icon"><use href="#i-shield"></use></svg>
+        校验通过 ≠ 100% 保证。系统把「证据」和「不确定性」一起展示。
+      </p>
+    </section>
+
+    <section class="right-col" aria-label="校验报告">
+      <div class="report-empty" id="emptyReport">
+        <div class="empty-badge"><svg class="icon"><use href="#i-shield"></use></svg></div>
+        <p class="eyebrow">THE VERIFICATION GATE</p>
+        <h2>答案不是终点，<br />证据才是。</h2>
+        <p class="empty-lede">每一道题都会经过同一道安全闸门：</p>
+        <div class="pipeline">
+          <div class="pipe-step"><span class="pipe-num">01</span><div><strong>多路独立求解</strong><p>不同策略各算一遍，避免一个错误被重复放大。</p></div></div>
+          <div class="pipe-step"><span class="pipe-num">02</span><div><strong>答案归一化</strong><p>把 <code>x=4</code>、<code>4</code>、<code>{4}</code> 变成可比较的对象。</p></div></div>
+          <div class="pipe-step"><span class="pipe-num">03</span><div><strong>符号 / 数值校验</strong><p>独立解方程、算表达式、求导、积分、代入检验。</p></div></div>
+          <div class="pipe-step"><span class="pipe-num">04</span><div><strong>交叉复核</strong><p>阅卷老师视角检查步骤、范围、单位和分类讨论。</p></div></div>
+          <div class="pipe-step"><span class="pipe-num">05</span><div><strong>分级交付</strong><p>证据不足就标记「待核对」，不制造虚假确定性。</p></div></div>
+        </div>
+        <div class="empty-note">
+          <span class="mini-shield"><svg class="icon"><use href="#i-shield"></use></svg></span>
+          <span>数学题可做确定性校验；物理、化学和证明题会明确标注验证范围。</span>
+        </div>
+      </div>
+
+      <div class="progress-card" id="progressCard" hidden>
+        <div class="progress-head">
+          <div>
+            <p class="eyebrow">RUNNING CHECKS</p>
+            <h2>正在进行可验证求解</h2>
+          </div>
+          <span class="progress-time" id="progressTime">0s</span>
+        </div>
+        <div class="progress-track"><span id="progressBar"></span></div>
+        <div class="stage-list" id="stageList"></div>
+        <div class="candidate-strip" id="candidateStrip"></div>
+        <p class="progress-note">多路求解通常需要 10–40 秒；请勿关闭页面。</p>
+      </div>
+
+      <div class="report" id="report" hidden>
+        <div class="report-head">
+          <div class="status-wrap">
+            <span class="status-badge" id="statusBadge"><svg class="icon"><use href="#i-shield"></use></svg><span id="statusBadgeText">待验证</span></span>
+            <span class="report-meta" id="reportMeta"></span>
+          </div>
+          <div class="confidence-wrap">
+            <div class="confidence-label"><span>可信度</span><strong id="confidenceValue">—</strong><span id="confidenceWord"></span></div>
+            <div class="confidence-track"><span id="confidenceBar"></span></div>
+          </div>
+        </div>
+
+        <div class="answer-card">
+          <div class="answer-card-head"><span>最终答案</span><span id="answerTypeLabel">—</span></div>
+          <div class="final-answer" id="finalAnswer"></div>
+          <p class="answer-note" id="answerNote"></p>
+        </div>
+
+        <div class="verification-card">
+          <div class="section-head"><span>校验依据</span><span class="muted-note" id="checkCount">0 项检查</span></div>
+          <ul class="check-list" id="checkList"></ul>
+          <p class="verification-note" id="verificationNote"></p>
+        </div>
+
+        <div class="candidates-card" id="candidatesCard">
+          <div class="section-head"><span>多路求解</span><span class="muted-note" id="agreementText"></span></div>
+          <div class="candidate-list" id="candidateList"></div>
+        </div>
+
+        <div class="student-card">
+          <div class="section-head"><span>检查我的答案</span><span class="muted-note">本地数学等价比较</span></div>
+          <div class="student-row">
+            <input id="studentAnswer" type="text" placeholder="输入你的答案，例如 x=4 或 1/3" autocomplete="off" aria-label="你的答案" />
+            <button class="btn primary" id="checkAnswerBtn">比对</button>
+          </div>
+          <p class="student-result" id="studentResult"></p>
+        </div>
+
+        <details class="steps-card" open>
+          <summary><span>分步解析</span><svg class="icon"><use href="#i-chevron"></use></svg></summary>
+          <div class="steps-list" id="stepsList"></div>
+        </details>
+
+        <div class="insight-grid">
+          <div class="insight-card">
+            <div class="section-head"><span>知识点</span><svg class="icon"><use href="#i-book"></use></svg></div>
+            <div class="tag-list" id="knowledgeList"></div>
+          </div>
+          <div class="insight-card mistake-card">
+            <div class="section-head"><span>易错点</span><svg class="icon"><use href="#i-alert"></use></svg></div>
+            <ul class="mistake-list" id="mistakeList"></ul>
+          </div>
+        </div>
+
+        <div class="report-actions">
+          <button class="btn ghost" id="copyReportBtn"><svg class="icon"><use href="#i-copy"></use></svg>复制解析</button>
+          <button class="btn primary" id="newQuestionBtn"><svg class="icon"><use href="#i-refresh"></use></svg>再问一题</button>
+        </div>
+        <p class="report-footnote">
+          <svg class="icon"><use href="#i-alert"></use></svg>
+          本工具用于学习辅助。请确认题目条件被完整输入；遇到「待核对」时，优先回到题目和课本。
+        </p>
+      </div>
+
+      <div class="error-card" id="errorCard" hidden>
+        <div class="error-icon"><svg class="icon"><use href="#i-alert"></use></svg></div>
+        <h3>这次没有完成校验</h3>
+        <p id="errorText"></p>
+        <div class="error-actions">
+          <button class="btn ghost" id="errorSettingsBtn">打开设置</button>
+          <button class="btn primary" id="errorRetryBtn">重试</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+  <div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+  <dialog class="modal" id="settingsDialog" aria-labelledby="settingsTitle">
+    <div class="modal-card">
+      <header class="modal-head">
+        <div>
+          <p class="modal-eyebrow">MODEL & VERIFICATION</p>
+          <h2 id="settingsTitle">连接解题模型</h2>
+        </div>
+        <button class="icon-btn modal-close" data-close aria-label="关闭"><svg class="icon"><use href="#i-close"></use></svg></button>
+      </header>
+      <div class="modal-body">
+        <p class="settings-intro">
+          默认使用 <strong>Kilo 免费模型</strong>（免 Key），也可以切换 OpenCode 免费通道或填写任意 OpenAI 兼容接口。
+          推荐数学能力较强的模型（Qwen2.5-Math / Omni-Edu / DeepSeek），再由本工具的独立校验层兜底。
+          没有网络或模型时仍可体验本地示例题。
+        </p>
+        <div class="preset-row" id="presetRow"></div>
+        <label class="field">
+          <span>接口地址 Base URL</span>
+          <input id="setBaseUrl" type="text" spellcheck="false" placeholder="如 http://127.0.0.1:8000/v1" autocomplete="off" />
+        </label>
+        <div class="field-grid">
+          <label class="field">
+            <span>模型名称</span>
+            <input id="setModel" type="text" spellcheck="false" placeholder="如 qwen2.5-math-7b-instruct" autocomplete="off" />
+          </label>
+          <label class="field">
+            <span>API Key</span>
+            <input id="setApiKey" type="password" spellcheck="false" placeholder="本地模型通常留空" autocomplete="off" />
+          </label>
+        </div>
+        <div class="field-grid">
+          <label class="field">
+            <span>独立求解次数</span>
+            <select id="setSamples" class="select">
+              <option value="1">1 路 · 最快</option>
+              <option value="2">2 路 · 较快</option>
+              <option value="3">3 路 · 推荐</option>
+              <option value="4">4 路 · 更稳</option>
+              <option value="5">5 路 · 最稳</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>交叉复核</span>
+            <span class="check-line"><input id="setCritic" type="checkbox" checked /><span>用独立阅卷视角再查一遍</span></span>
+          </label>
+        </div>
+        <div class="test-row">
+          <button class="btn ghost" id="testBtn" type="button">测试连接</button>
+          <span class="test-status" id="testStatus">尚未测试</span>
+        </div>
+        <p class="fineprint">
+          密钥只保存在本机浏览器 localStorage，并随请求发送到你在 Base URL 中填写的服务。
+          如果使用公共电脑，请在使用后清除本地数据。
+        </p>
+      </div>
+      <footer class="modal-foot">
+        <button class="link-btn danger" id="resetDataBtn" type="button">清除本地数据</button>
+        <div class="foot-actions">
+          <button class="btn ghost" data-close type="button">取消</button>
+          <button class="btn primary" id="saveSettingsBtn" type="button">保存设置</button>
+        </div>
+      </footer>
+    </div>
+  </dialog>
+
+  <script src="vendor/katex/katex.min.js" defer></script>
+  <script src="app.js?v=6" defer></script>
+</body>
+</html>

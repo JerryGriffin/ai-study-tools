@@ -1,0 +1,124 @@
+AI STUDY TOOLS — PROPRIETARY LICENSE
+(All Rights Reserved · Not an Open Source License)
+
+Copyright (c) 2026 JerryGriffin. All rights reserved.
+
+This Software is proprietary. It is made available only under the limited
+terms below. It is NOT licensed under MIT, Apache, GPL, or any other
+open-source license.
+
+"Software" means the AI Study Tools project, including its source code,
+HTML/CSS/JavaScript, Python code, documentation, prompts, text, images,
+designs, and all other materials in this repository, together with official
+release packages and the official hosted demo.
+
+1. LIMITED PERMISSION
+
+Subject to this License, you may only:
+
+  (a) access and use the official hosted demo at
+      https://jerrygriffin.github.io/ai-study-tools/ for your own personal,
+      non-commercial study; and
+
+  (b) download and run an official, unmodified release package for your own
+      personal, non-commercial study on a device you control.
+
+No other rights are granted. All rights not expressly granted are reserved
+by the copyright holder.
+
+2. PROHIBITED USES
+
+Without prior written permission from the copyright holder, you may NOT:
+
+  (a) copy, reproduce, mirror, archive, or republish the Software, except
+      for one backup copy of an official release for your own personal use;
+
+  (b) modify, adapt, translate, reverse engineer, or create derivative
+      works based on the Software;
+
+  (c) distribute, publish, sublicense, sell, rent, lease, lend, share, or
+      otherwise make the Software available to any third party;
+
+  (d) deploy or host the Software, or any part of it, as a website,
+      service, API, product, internal tool, or public demo;
+
+  (e) integrate the Software, or any part of it, into any product, service,
+      course, tutoring business, or other commercial offering;
+
+  (f) use the Software or its source code for any commercial purpose,
+      including paid tutoring, paid courses, or commercial AI products;
+
+  (g) use the Software or its source code to train, fine-tune, evaluate, or
+      develop machine-learning models or datasets;
+
+  (h) remove, obscure, or alter any copyright, license, or attribution
+      notice; or
+
+  (i) use the Software in any way that violates applicable law.
+
+3. ORGANIZATIONS
+
+Schools, companies, institutions, and other organizations must obtain a
+separate written license before any use, including internal evaluation,
+teaching, research, or deployment.
+
+4. THIRD-PARTY COMPONENTS
+
+KaTeX, Tesseract.js, OCR language data, and other third-party components are
+governed by their own licenses. See THIRD-PARTY-NOTICES.md and the applicable
+license files. This License does not limit any rights granted to you under
+those third-party licenses for those components.
+
+5. NO CONTRIBUTIONS
+
+No contribution, pull request, patch, or other material is accepted unless
+separately agreed in writing by the copyright holder.
+
+6. TERMINATION
+
+This License terminates automatically if you breach any term. On termination,
+you must immediately stop all use and delete all copies of the Software in
+your possession or control.
+
+7. NO WARRANTY
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. YOU USE THE
+SOFTWARE ENTIRELY AT YOUR OWN RISK.
+
+8. LIMITATION OF LIABILITY
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE COPYRIGHT HOLDER SHALL NOT BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR
+PUNITIVE DAMAGES, OR FOR ANY LOSS OF DATA, PROFITS, OR GOODWILL, ARISING FROM
+OR RELATED TO THE SOFTWARE OR THIS LICENSE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES.
+
+9. PERMISSION REQUESTS
+
+For any use not expressly permitted above, contact the copyright holder via
+GitHub: https://github.com/JerryGriffin
+
+---
+
+中文参考译文（如中英文有冲突，以英文版本为准）
+
+本项目为专有软件，保留所有权利，不是开源软件，也不采用 MIT、Apache、GPL
+或其他开源许可证。
+
+在遵守本许可证的前提下，仅允许：
+1. 个人出于非商业学习目的访问官方在线演示；
+2. 个人在自有设备上运行官方发布的、未经修改的完整版压缩包。
+
+未经版权人事先书面许可，禁止复制、修改、翻译、反向工程、制作衍生作品、
+分发、转售、出租、出借、公开部署、作为服务或产品使用、商用、用于训练或
+评测机器学习模型，以及删除版权或署名信息。学校、公司、机构等组织在内部
+评估、教学、研究或部署前，也必须取得单独书面许可。
+
+第三方组件（KaTeX、Tesseract.js、OCR 语言数据等）仍适用其各自许可证，
+详见 THIRD-PARTY-NOTICES.md 及相关目录中的许可证文件。
+
+违反本许可证将自动终止授权，您必须立即停止使用并删除所有副本。本软件按
+“现状”提供，不附带任何明示或默示担保；在法律允许的最大范围内，版权人
+不承担任何责任。

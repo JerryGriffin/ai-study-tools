@@ -1,0 +1,972 @@
+{
+  "demoQuestions": [
+    {
+      "id": "demo-001",
+      "title": "有理数混合运算",
+      "grade": "初中",
+      "subject": "数学",
+      "question": "计算：$(-3)^2-2\\times(-4)$。"
+    },
+    {
+      "id": "demo-002",
+      "title": "一元一次方程",
+      "grade": "初中",
+      "subject": "数学",
+      "question": "解方程：$2x+5=13$。"
+    },
+    {
+      "id": "demo-003",
+      "title": "一元一次不等式",
+      "grade": "初中",
+      "subject": "数学",
+      "question": "解不等式：$3x-2<7$。"
+    },
+    {
+      "id": "demo-004",
+      "title": "整式化简",
+      "grade": "初中",
+      "subject": "数学",
+      "question": "化简：$(x+2)^2-x(x+4)$。"
+    },
+    {
+      "id": "demo-005",
+      "title": "一元二次方程",
+      "grade": "初中",
+      "subject": "数学",
+      "question": "解方程：$x^2-5x+6=0$。"
+    },
+    {
+      "id": "demo-006",
+      "title": "函数值",
+      "grade": "初中",
+      "subject": "数学",
+      "question": "已知 $f(x)=2x+1$，求 $f(3)$。"
+    },
+    {
+      "id": "demo-007",
+      "title": "勾股定理",
+      "grade": "初中",
+      "subject": "数学",
+      "question": "一个直角三角形的两条直角边分别为 $6$ 和 $8$，求斜边长。"
+    },
+    {
+      "id": "demo-008",
+      "title": "多项式求导",
+      "grade": "高中",
+      "subject": "数学",
+      "question": "求函数 $f(x)=x^3-3x$ 的导数。"
+    },
+    {
+      "id": "demo-009",
+      "title": "定积分",
+      "grade": "高中",
+      "subject": "数学",
+      "question": "计算：$\\int_0^1 x^2\\,dx$。"
+    },
+    {
+      "id": "demo-010",
+      "title": "特殊角三角函数",
+      "grade": "高中",
+      "subject": "数学",
+      "question": "求 $\\sin 30^\\circ$ 的值。"
+    },
+    {
+      "id": "demo-011",
+      "title": "等差数列",
+      "grade": "高中",
+      "subject": "数学",
+      "question": "等差数列 $\\{a_n\\}$ 中，$a_1=2$，公差 $d=3$，求 $a_{10}$。"
+    },
+    {
+      "id": "demo-012",
+      "title": "简单概率",
+      "grade": "初中",
+      "subject": "数学",
+      "question": "掷一枚均匀的骰子，求掷出偶数的概率。"
+    },
+    {
+      "id": "demo-013",
+      "title": "对数运算",
+      "grade": "高中",
+      "subject": "数学",
+      "question": "计算：$\\log_2 8$。"
+    },
+    {
+      "id": "demo-014",
+      "title": "速度公式",
+      "grade": "初中",
+      "subject": "物理",
+      "question": "一辆车以 $5\\,\\text{m/s}$ 的速度匀速行驶 $4\\,\\text{s}$，求行驶路程。"
+    }
+  ],
+  "results": {
+    "demo-001": {
+      "id": "cf79981a46d6",
+      "question": "计算：$(-3)^2-2\\times(-4)$。",
+      "grade": "初中",
+      "subject": "数学",
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
+      "confidenceLabel": "中",
+      "finalAnswer": "$17$",
+      "answerType": "number",
+      "steps": [
+        "先算乘方：$(-3)^2=9$。",
+        "再算乘法：$2\\times(-4)=-8$，所以减去 $-8$ 等于加上 $8$。",
+        "最后算加减：$9+8=17$。"
+      ],
+      "knowledgePoints": [
+        "有理数的乘方",
+        "有理数的乘法",
+        "去括号与符号"
+      ],
+      "commonMistakes": [
+        "把 $(-3)^2$ 算成 $-9$",
+        "减去负数时忘记变号"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "表达式独立计算",
+          "status": "pass",
+          "detail": "独立计算得：17",
+          "strength": "strong"
+        }
+      ],
+      "verification": {
+        "verdict": "pass",
+        "independentVerified": true,
+        "contradicted": false,
+        "strongCheckCount": 1
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$17$",
+            "size": 1,
+            "answerType": "number"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$17$",
+          "answerType": "number",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 9
+    },
+    "demo-002": {
+      "id": "8f24992c1a96",
+      "question": "解方程：$2x+5=13$。",
+      "grade": "初中",
+      "subject": "数学",
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
+      "confidenceLabel": "中",
+      "finalAnswer": "$x=4$",
+      "answerType": "equation",
+      "steps": [
+        "移项：$2x=13-5$，即 $2x=8$。",
+        "两边同除以 $2$：$x=4$。",
+        "代回检验：$2\\times4+5=13$，成立。"
+      ],
+      "knowledgePoints": [
+        "等式的基本性质",
+        "移项",
+        "一元一次方程"
+      ],
+      "commonMistakes": [
+        "移项时忘记变号",
+        "两边没有同时除以系数"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "方程/不等式独立求解",
+          "status": "pass",
+          "detail": "独立解得：x ∈ {4}",
+          "strength": "strong"
+        }
+      ],
+      "verification": {
+        "verdict": "pass",
+        "independentVerified": true,
+        "contradicted": false,
+        "strongCheckCount": 1
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$x=4$",
+            "size": 1,
+            "answerType": "equation"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$x=4$",
+          "answerType": "equation",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 54
+    },
+    "demo-003": {
+      "id": "0588479988e8",
+      "question": "解不等式：$3x-2<7$。",
+      "grade": "初中",
+      "subject": "数学",
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
+      "confidenceLabel": "中",
+      "finalAnswer": "$x<3$",
+      "answerType": "interval",
+      "steps": [
+        "移项：$3x<7+2$，即 $3x<9$。",
+        "两边同除以正数 $3$，不等号方向不变：$x<3$。",
+        "所以解集为 $(-\\infty,3)$。"
+      ],
+      "knowledgePoints": [
+        "一元一次不等式",
+        "不等式的基本性质",
+        "解集的表示"
+      ],
+      "commonMistakes": [
+        "除以负数时忘记改变不等号方向",
+        "把解集写成 $x\\le3$"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "方程/不等式独立求解",
+          "status": "pass",
+          "detail": "独立解集：Interval.open(-oo, 3)",
+          "strength": "strong"
+        }
+      ],
+      "verification": {
+        "verdict": "pass",
+        "independentVerified": true,
+        "contradicted": false,
+        "strongCheckCount": 1
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$x<3$",
+            "size": 1,
+            "answerType": "interval"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$x<3$",
+          "answerType": "interval",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 142
+    },
+    "demo-004": {
+      "id": "ae1fc4cf26db",
+      "question": "化简：$(x+2)^2-x(x+4)$。",
+      "grade": "初中",
+      "subject": "数学",
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
+      "confidenceLabel": "中",
+      "finalAnswer": "$4$",
+      "answerType": "expression",
+      "steps": [
+        "展开完全平方：$(x+2)^2=x^2+4x+4$。",
+        "展开第二项：$x(x+4)=x^2+4x$。",
+        "相减：$(x^2+4x+4)-(x^2+4x)=4$。"
+      ],
+      "knowledgePoints": [
+        "完全平方公式",
+        "单项式乘多项式",
+        "整式加减"
+      ],
+      "commonMistakes": [
+        "完全平方漏掉中间项 $4x$",
+        "去括号时符号出错"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "表达式独立计算",
+          "status": "pass",
+          "detail": "独立计算得：4",
+          "strength": "strong"
+        }
+      ],
+      "verification": {
+        "verdict": "pass",
+        "independentVerified": true,
+        "contradicted": false,
+        "strongCheckCount": 1
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$4$",
+            "size": 1,
+            "answerType": "expression"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$4$",
+          "answerType": "expression",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 10
+    },
+    "demo-005": {
+      "id": "242fdc245004",
+      "question": "解方程：$x^2-5x+6=0$。",
+      "grade": "初中",
+      "subject": "数学",
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
+      "confidenceLabel": "中",
+      "finalAnswer": "$x=2$ 或 $x=3$",
+      "answerType": "equation",
+      "steps": [
+        "因式分解：$x^2-5x+6=(x-2)(x-3)$。",
+        "令每个因式为 $0$：$x-2=0$ 或 $x-3=0$。",
+        "所以 $x=2$ 或 $x=3$。",
+        "代回检验：两个值都能使原方程成立。"
+      ],
+      "knowledgePoints": [
+        "十字相乘法",
+        "因式分解法解一元二次方程",
+        "根的意义"
+      ],
+      "commonMistakes": [
+        "只写出一个根",
+        "分解后忘记令每个因式为零"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "方程/不等式独立求解",
+          "status": "pass",
+          "detail": "独立解得：x ∈ {2, 3}",
+          "strength": "strong"
+        }
+      ],
+      "verification": {
+        "verdict": "pass",
+        "independentVerified": true,
+        "contradicted": false,
+        "strongCheckCount": 1
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$x=2$ 或 $x=3$",
+            "size": 1,
+            "answerType": "equation"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$x=2$ 或 $x=3$",
+          "answerType": "equation",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 7
+    },
+    "demo-006": {
+      "id": "2c4ed45b15fe",
+      "question": "已知 $f(x)=2x+1$，求 $f(3)$。",
+      "grade": "初中",
+      "subject": "数学",
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
+      "confidenceLabel": "中",
+      "finalAnswer": "$7$",
+      "answerType": "number",
+      "steps": [
+        "把 $x=3$ 代入函数解析式。",
+        "$f(3)=2\\times3+1=7$。"
+      ],
+      "knowledgePoints": [
+        "函数的概念",
+        "代入求值"
+      ],
+      "commonMistakes": [
+        "把 $f(3)$ 理解为 $f(x)\\times3$",
+        "代入后算错乘法"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "函数值独立计算",
+          "status": "pass",
+          "detail": "f(3)=7",
+          "strength": "strong"
+        }
+      ],
+      "verification": {
+        "verdict": "pass",
+        "independentVerified": true,
+        "contradicted": false,
+        "strongCheckCount": 1
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$7$",
+            "size": 1,
+            "answerType": "number"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$7$",
+          "answerType": "number",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 2
+    },
+    "demo-007": {
+      "id": "63502953b65f",
+      "question": "一个直角三角形的两条直角边分别为 $6$ 和 $8$，求斜边长。",
+      "grade": "初中",
+      "subject": "数学",
+      "status": "demo",
+      "statusText": "本地示例",
+      "confidence": 0.78,
+      "confidenceLabel": "中",
+      "finalAnswer": "$10$",
+      "answerType": "number",
+      "steps": [
+        "设斜边为 $c$，由勾股定理 $c^2=6^2+8^2$。",
+        "$c^2=36+64=100$。",
+        "因为边长取正值，所以 $c=10$。"
+      ],
+      "knowledgePoints": [
+        "勾股定理",
+        "算术平方根"
+      ],
+      "commonMistakes": [
+        "把斜边当成直角边",
+        "求出 $c^2=100$ 后忘记开方"
+      ],
+      "assumptions": [],
+      "checks": [],
+      "verification": {
+        "verdict": "none",
+        "independentVerified": false,
+        "contradicted": false,
+        "strongCheckCount": 0
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$10$",
+            "size": 1,
+            "answerType": "number"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$10$",
+          "answerType": "number",
+          "confidence": 0.96
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 0
+    },
+    "demo-008": {
+      "id": "f60344814453",
+      "question": "求函数 $f(x)=x^3-3x$ 的导数。",
+      "grade": "高中",
+      "subject": "数学",
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
+      "confidenceLabel": "中",
+      "finalAnswer": "$f'(x)=3x^2-3$",
+      "answerType": "expression",
+      "steps": [
+        "对每一项分别求导：$(x^3)'=3x^2$。",
+        "$(-3x)'=-3$。",
+        "所以 $f'(x)=3x^2-3$。"
+      ],
+      "knowledgePoints": [
+        "导数的四则运算",
+        "基本初等函数求导"
+      ],
+      "commonMistakes": [
+        "把常数项 $-3x$ 的导数写成 $-3x$",
+        "忘记对 $x^3$ 使用幂法则"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "导数独立计算",
+          "status": "pass",
+          "detail": "f'(x)=3*x**2 - 3",
+          "strength": "strong"
+        }
+      ],
+      "verification": {
+        "verdict": "pass",
+        "independentVerified": true,
+        "contradicted": false,
+        "strongCheckCount": 1
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$f'(x)=3x^2-3$",
+            "size": 1,
+            "answerType": "expression"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$f'(x)=3x^2-3$",
+          "answerType": "expression",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 12
+    },
+    "demo-009": {
+      "id": "c8d176eb03c9",
+      "question": "计算：$\\int_0^1 x^2\\,dx$。",
+      "grade": "高中",
+      "subject": "数学",
+      "status": "demo",
+      "statusText": "本地示例",
+      "confidence": 0.78,
+      "confidenceLabel": "中",
+      "finalAnswer": "$\\frac13$",
+      "answerType": "number",
+      "steps": [
+        "求原函数：$\\int x^2dx=\\frac{x^3}{3}+C$。",
+        "用牛顿-莱布尼茨公式：$\\left[\\frac{x^3}{3}\\right]_0^1=\\frac13-0$。",
+        "所以结果为 $\\frac13$。"
+      ],
+      "knowledgePoints": [
+        "定积分的计算",
+        "牛顿-莱布尼茨公式"
+      ],
+      "commonMistakes": [
+        "忘记代入下限",
+        "原函数求错"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "表达式独立计算",
+          "status": "skip",
+          "detail": "表达式解析失败",
+          "strength": "weak"
+        }
+      ],
+      "verification": {
+        "verdict": "skip",
+        "independentVerified": false,
+        "contradicted": false,
+        "strongCheckCount": 0
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$\\frac13$",
+            "size": 1,
+            "answerType": "number"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$\\frac13$",
+          "answerType": "number",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 1
+    },
+    "demo-010": {
+      "id": "3707a8b21f0d",
+      "question": "求 $\\sin 30^\\circ$ 的值。",
+      "grade": "高中",
+      "subject": "数学",
+      "status": "demo",
+      "statusText": "本地示例",
+      "confidence": 0.78,
+      "confidenceLabel": "中",
+      "finalAnswer": "$\\frac12$",
+      "answerType": "number",
+      "steps": [
+        "$30^\\circ$ 是特殊角。",
+        "由特殊角三角函数值表，$\\sin30^\\circ=\\frac12$。"
+      ],
+      "knowledgePoints": [
+        "特殊角的三角函数值"
+      ],
+      "commonMistakes": [
+        "把 $\\sin30^\\circ$ 与 $\\cos30^\\circ$ 混淆"
+      ],
+      "assumptions": [],
+      "checks": [],
+      "verification": {
+        "verdict": "none",
+        "independentVerified": false,
+        "contradicted": false,
+        "strongCheckCount": 0
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$\\frac12$",
+            "size": 1,
+            "answerType": "number"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$\\frac12$",
+          "answerType": "number",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 1
+    },
+    "demo-011": {
+      "id": "804d0a0ff271",
+      "question": "等差数列 $\\{a_n\\}$ 中，$a_1=2$，公差 $d=3$，求 $a_{10}$。",
+      "grade": "高中",
+      "subject": "数学",
+      "status": "demo",
+      "statusText": "本地示例",
+      "confidence": 0.78,
+      "confidenceLabel": "中",
+      "finalAnswer": "$29$",
+      "answerType": "number",
+      "steps": [
+        "等差数列通项公式：$a_n=a_1+(n-1)d$。",
+        "代入 $n=10$：$a_{10}=2+(10-1)\\times3$。",
+        "$a_{10}=2+27=29$。"
+      ],
+      "knowledgePoints": [
+        "等差数列通项公式"
+      ],
+      "commonMistakes": [
+        "把 $(n-1)d$ 写成 $nd$",
+        "代入时算错乘法"
+      ],
+      "assumptions": [],
+      "checks": [],
+      "verification": {
+        "verdict": "none",
+        "independentVerified": false,
+        "contradicted": false,
+        "strongCheckCount": 0
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$29$",
+            "size": 1,
+            "answerType": "number"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$29$",
+          "answerType": "number",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 0
+    },
+    "demo-012": {
+      "id": "2ad00b83066f",
+      "question": "掷一枚均匀的骰子，求掷出偶数的概率。",
+      "grade": "初中",
+      "subject": "数学",
+      "status": "demo",
+      "statusText": "本地示例",
+      "confidence": 0.78,
+      "confidenceLabel": "中",
+      "finalAnswer": "$\\frac12$",
+      "answerType": "number",
+      "steps": [
+        "骰子的六个面中，偶数有 $2,4,6$，共 $3$ 个。",
+        "所有等可能结果有 $6$ 个。",
+        "概率 $P=\\frac{3}{6}=\\frac12$。"
+      ],
+      "knowledgePoints": [
+        "等可能事件概率",
+        "概率公式"
+      ],
+      "commonMistakes": [
+        "把偶数个数数错",
+        "忘记写最简分数"
+      ],
+      "assumptions": [],
+      "checks": [],
+      "verification": {
+        "verdict": "none",
+        "independentVerified": false,
+        "contradicted": false,
+        "strongCheckCount": 0
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$\\frac12$",
+            "size": 1,
+            "answerType": "number"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$\\frac12$",
+          "answerType": "number",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 0
+    },
+    "demo-013": {
+      "id": "468ceb63605f",
+      "question": "计算：$\\log_2 8$。",
+      "grade": "高中",
+      "subject": "数学",
+      "status": "checked",
+      "statusText": "本地校验通过",
+      "confidence": 0.82,
+      "confidenceLabel": "中",
+      "finalAnswer": "$3$",
+      "answerType": "number",
+      "steps": [
+        "设 $\\log_2 8=x$，则 $2^x=8$。",
+        "因为 $8=2^3$，所以 $x=3$。"
+      ],
+      "knowledgePoints": [
+        "对数的定义",
+        "指数与对数的互化"
+      ],
+      "commonMistakes": [
+        "把 $\\log_2 8$ 与 $\\log_8 2$ 混淆",
+        "忘记 $2^3=8$"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "表达式独立计算",
+          "status": "pass",
+          "detail": "独立计算得：3",
+          "strength": "strong"
+        }
+      ],
+      "verification": {
+        "verdict": "pass",
+        "independentVerified": true,
+        "contradicted": false,
+        "strongCheckCount": 1
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$3$",
+            "size": 1,
+            "answerType": "number"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$3$",
+          "answerType": "number",
+          "confidence": 0.99
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 0
+    },
+    "demo-014": {
+      "id": "0669872be01f",
+      "question": "一辆车以 $5\\,\\text{m/s}$ 的速度匀速行驶 $4\\,\\text{s}$，求行驶路程。",
+      "grade": "初中",
+      "subject": "物理",
+      "status": "demo",
+      "statusText": "本地示例",
+      "confidence": 0.78,
+      "confidenceLabel": "中",
+      "finalAnswer": "$20\\,\\text{m}$",
+      "answerType": "number",
+      "steps": [
+        "匀速直线运动的路程公式：$s=vt$。",
+        "代入 $v=5\\,\\text{m/s}$，$t=4\\,\\text{s}$。",
+        "$s=5\\times4=20\\,\\text{m}$。"
+      ],
+      "knowledgePoints": [
+        "速度公式",
+        "单位的一致性"
+      ],
+      "commonMistakes": [
+        "把速度和时间相加",
+        "忘记写单位"
+      ],
+      "assumptions": [],
+      "checks": [
+        {
+          "name": "单位格式",
+          "status": "skip",
+          "detail": "答案未包含单位，需人工确认",
+          "strength": "weak"
+        }
+      ],
+      "verification": {
+        "verdict": "skip",
+        "independentVerified": false,
+        "contradicted": false,
+        "strongCheckCount": 0
+      },
+      "consensus": {
+        "total": 1,
+        "agreement": 1.0,
+        "groups": [
+          {
+            "answer": "$20\\,\\text{m}$",
+            "size": 1,
+            "answerType": "number"
+          }
+        ]
+      },
+      "candidates": [
+        {
+          "answer": "$20\\,\\text{m}$",
+          "answerType": "number",
+          "confidence": 0.97
+        }
+      ],
+      "critic": null,
+      "demo": true,
+      "recognizedFromImage": false,
+      "recognizedText": null,
+      "verificationNote": "这道题来自本地示例库，不经过在线模型；符号校验由服务器本地完成。",
+      "elapsedMs": 1
+    }
+  }
+}
