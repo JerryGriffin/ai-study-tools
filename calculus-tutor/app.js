@@ -56,14 +56,14 @@
   };
 
   const PRESETS = [
-    { id: 'kilo', label: 'Kilo', base: '/api', model: 'kilo-auto/free', hint: '免 Key，推荐（先运行 python serve.py）' },
-    { id: 'opencode', label: 'OpenCode 本机', base: '/api', model: 'opencode/deepseek-v4.1-flash-free', hint: '使用本机 OpenCode 本机模型' },
-    { id: 'pollinations', label: 'Pollinations', base: 'https://text.pollinations.ai/openai', model: 'openai', hint: '免 Key，匿名限速' },
+    { id: 'kilo', label: '在线服务', base: '/api', model: 'kilo-auto/free', hint: '免 Key，推荐（先运行 python serve.py）' },
+    { id: 'opencode', label: '本机服务', base: '/api', model: 'opencode/deepseek-v4.1-flash-free', hint: '使用本机服务' },
+    { id: 'pollinations', label: '在线服务（限速）', base: 'https://text.pollinations.ai/openai', model: 'openai', hint: '免 Key，匿名限速' },
     { id: 'proxy', label: '自定义代理', base: '/api', model: 'omniedu-4b', hint: '先运行 python serve.py' },
-    { id: 'vllm', label: 'OmniEdu · vLLM', base: 'http://127.0.0.1:8000/v1', model: 'omniedu-4b', hint: 'OpenAI 兼容接口' },
-    { id: 'ollama', label: 'Ollama', base: 'http://127.0.0.1:11434/v1', model: 'qwen2.5:7b', hint: '本地模型' },
-    { id: 'deepseek', label: 'DeepSeek', base: 'https://api.deepseek.com/v1', model: 'deepseek-chat', hint: '需要 API Key' },
-    { id: 'openai', label: 'OpenAI', base: 'https://api.openai.com/v1', model: 'gpt-4o-mini', hint: '需要 API Key' }
+    { id: 'vllm', label: '本地服务', base: 'http://127.0.0.1:8000/v1', model: 'omniedu-4b', hint: 'OpenAI 兼容接口' },
+    { id: 'ollama', label: '本地服务', base: 'http://127.0.0.1:11434/v1', model: 'qwen2.5:7b', hint: '本地模型' },
+    { id: 'deepseek', label: '自定义接口', base: 'https://api.deepseek.com/v1', model: 'deepseek-chat', hint: '需要 API Key' },
+    { id: 'openai', label: '自定义接口', base: 'https://api.openai.com/v1', model: 'gpt-4o-mini', hint: '需要 API Key' }
   ];
 
   const FORMULA_SNIPPETS = [
@@ -1123,18 +1123,16 @@
     if (state.staticMode) {
       statusBtn.classList.add('demo');
       statusBtn.classList.remove('online');
-      statusText.textContent = 'Pollinations 在线演示';
-      statusBtn.title = 'GitHub Pages 在线演示：Pollinations 模型，匿名约 45 秒限 1 次。';
-      statusBtn.setAttribute('aria-label', '模型连接状态：Pollinations 在线演示');
+      statusText.textContent = '在线';
+      statusBtn.title = '在线服务';
+      statusBtn.setAttribute('aria-label', '模型连接状态：在线');
       return;
     }
     const configured = !isDemo();
     statusBtn.classList.toggle('online', configured);
     statusBtn.classList.toggle('demo', !configured);
-    statusText.textContent = configured ? state.settings.model : '离线演示';
-    statusBtn.title = configured
-      ? '已配置：' + state.settings.baseUrl + ' · ' + state.settings.model
-      : '尚未连接模型，点击打开设置';
+    statusText.textContent = configured ? '在线' : '离线';
+    statusBtn.title = configured ? '已连接' : '打开设置';
   }
 
   function updateComposer() {
@@ -1146,7 +1144,7 @@
 
   function updatePlaceholder() {
     const chapter = chapterOf(state.chapterId);
-    input.placeholder = '关于「' + chapter.name + '」，你卡在哪一步？例如：为什么这里可以用洛必达？';
+    input.placeholder = '输入题目或卡点…';
   }
 
   function renderModeButtons() {
@@ -1774,11 +1772,11 @@
 
   function openSettings() {
     if (state.staticMode) {
-      toast('在线演示固定使用 Pollinations 模型');
+      toast('在线演示');
       return;
     }
     if (state.publicMode) {
-      toast('公共服务已固定使用 Kilo 模型，无需配置');
+      toast('公共服务无需配置');
       return;
     }
     setBaseUrl.value = state.settings.baseUrl || '';
@@ -2522,7 +2520,7 @@
       // Images are still supported: static mode OCRs them locally into text.
       const imageButton = document.querySelector('#imageBtn');
       if (imageButton) imageButton.title = '上传题目图片，浏览器内 OCR 识别为文字（识别结果可编辑）';
-      toast('在线演示：Pollinations 模型（约 45 秒限 1 次）');
+      toast('在线演示');
       return true;
     }
     try {
@@ -2551,7 +2549,7 @@
       persist();
       renderStatus();
       renderAll();
-      toast('已连接模型 · ' + model);
+      toast('已连接');
       return true;
     } catch (err) {
       return false;

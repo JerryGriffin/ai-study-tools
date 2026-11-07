@@ -2987,3 +2987,12 @@ svg {
 }
 .new-chat kbd { display: none; }
 #statusBtn { cursor: default; }
+.welcome .eyebrow,
+.suggest-grid,
+.welcome-stats,
+.brand-text small {
+  display: none !important;
+}
+.welcome h1 { font-size: clamp(30px, 4vw, 44px); }
+.welcome .lede { margin-top: 10px; }
+.welcome h1 { color: var(--ink, #1c2126); }

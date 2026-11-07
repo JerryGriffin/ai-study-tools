@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" /><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="0" />
-  <meta name="description" content="高数答疑室：面向大学生的大学高等数学 AI 答疑与练习工具。诊断卡点、分层提示、分步讲解，支持任意 OpenAI 兼容模型。" />
+  <meta name="description" content="高数答疑室：面向大学生的大学高等数学 AI 答疑与练习工具。诊断卡点、分层提示、分步讲解，支持任意 通用兼容模型。" />
   <meta name="theme-color" content="#f6f2e9" />
   <title>高数答疑室 · 大学高等数学 AI 助教</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f6b5c'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' fill='%23f6f2e9' text-anchor='middle'%3E%E2%88%91%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="vendor/katex/katex.min.css" />
-  <link rel="stylesheet" href="styles.css?v=8" />
+  <link rel="stylesheet" href="styles.css?v=10" />
 </head>
 <body>
   <svg class="svg-sprite" aria-hidden="true" focusable="false">
@@ -120,11 +120,8 @@
                 <span class="pulse"></span>
                 <span id="welcomeChapterMeta">第 1 章 · 极限与连续</span>
               </p>
-              <h1>把不会的题，<br /><em>讲到会为止。</em></h1>
-              <p class="lede">
-                不直接甩答案。先定位卡点，再给一层层提示，最后把方法留下。
-                打字、贴公式，或者上传一张题目截图都可以。
-              </p>
+              <h1>高数答疑室</h1>
+              <p class="lede">写下题目或卡点。</p>
               <div class="suggest-grid" id="suggestGrid"></div>
               <div class="welcome-stats">
                 <div><strong id="wAsk">0</strong><span>次提问</span></div>
@@ -140,7 +137,7 @@
         <div class="composer-shell">
           <div class="composer" id="composer">
             <div class="pending-images" id="pendingImages" hidden></div>
-            <textarea id="input" rows="1" maxlength="8000" placeholder="写下你卡住的地方，例如：为什么这道题可以用等价无穷小替换？"></textarea>
+            <textarea id="input" rows="1" maxlength="8000" placeholder="输入题目或卡点…"></textarea>
             <div class="composer-row">
               <div class="mode-group" id="modeGroup" role="group" aria-label="回答模式">
                 <button type="button" class="mode-btn active" data-mode="guide">引导式</button>
@@ -213,8 +210,7 @@
       </header>
       <div class="modal-body">
         <p class="settings-intro">
-          推荐用 <code>python serve.py</code> 启动本地代理：默认连接 <strong>Kilo模型</strong>（免 Key），
-          也可以切换 OpenCode 本机通道，或直接填写 vLLM、Ollama、DeepSeek 等服务地址。不配置也能使用离线演示。
+          推荐用 <code>python serve.py</code> 启动本地代理；也可以填写任意 通用兼容服务地址。不配置也能使用离线演示。
         </p>
 
         <div class="preset-row" id="presetRow"></div>
@@ -226,7 +222,7 @@
         <div class="field-grid">
           <label class="field">
             <span>模型名称</span>
-            <input id="setModel" type="text" spellcheck="false" placeholder="如 omniedu-4b / deepseek-chat" autocomplete="off" />
+            <input id="setModel" type="text" spellcheck="false" placeholder="填写模型名称" autocomplete="off" />
           </label>
           <label class="field">
             <span>API Key</span>
@@ -338,6 +334,6 @@
 
   <script src="vendor/katex/katex.min.js" defer></script>
   <script src="data.js" defer></script>
-  <script src="app.js?v=9" defer></script>
+  <script src="app.js?v=11" defer></script>
 </body>
 </html>

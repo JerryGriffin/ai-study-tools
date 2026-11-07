@@ -18,14 +18,14 @@
 
   const PRESETS = [
     { id: 'demo', label: '本地示例', base: '', model: '', hint: '不调用模型，体验内置题库' },
-    { id: 'kilo', label: 'Kilo', base: 'https://api.kilo.ai/api/gateway', model: 'kilo-auto/free', hint: '免 Key，推荐' },
-    { id: 'opencode', label: 'OpenCode 本机', base: 'opencode', model: 'opencode/deepseek-v4.1-flash-free', hint: '使用本机 OpenCode 本机模型' },
-    { id: 'pollinations', label: 'Pollinations', base: 'https://text.pollinations.ai/openai', model: 'openai', hint: '免 Key，约 45 秒限 1 次' },
-    { id: 'vllm', label: 'Qwen Math · vLLM', base: 'http://127.0.0.1:8000/v1', model: 'qwen2.5-math-7b-instruct', hint: '推荐：数学专用模型' },
-    { id: 'omni', label: 'OmniEdu · vLLM', base: 'http://127.0.0.1:8000/v1', model: 'omniedu-9b', hint: 'Omni-Edu 9B' },
-    { id: 'deepseek', label: 'DeepSeek', base: 'https://api.deepseek.com/v1', model: 'deepseek-chat', hint: '需要 API Key' },
-    { id: 'openai', label: 'OpenAI', base: 'https://api.openai.com/v1', model: 'gpt-4o-mini', hint: '需要 API Key' },
-    { id: 'ollama', label: 'Ollama', base: 'http://127.0.0.1:11434/v1', model: 'qwen2.5:7b', hint: '本地运行' }
+    { id: 'kilo', label: '在线服务', base: 'https://api.kilo.ai/api/gateway', model: 'kilo-auto/free', hint: '免 Key，推荐' },
+    { id: 'opencode', label: '本机服务', base: 'opencode', model: 'opencode/deepseek-v4.1-flash-free', hint: '使用本机服务' },
+    { id: 'pollinations', label: '在线服务（限速）', base: 'https://text.pollinations.ai/openai', model: 'openai', hint: '免 Key，约 45 秒限 1 次' },
+    { id: 'vllm', label: '本地服务', base: 'http://127.0.0.1:8000/v1', model: 'qwen2.5-math-7b-instruct', hint: '数学专用模型' },
+    { id: 'omni', label: '本地服务', base: 'http://127.0.0.1:8000/v1', model: 'omniedu-9b', hint: '本地服务' },
+    { id: 'deepseek', label: '自定义接口', base: 'https://api.deepseek.com/v1', model: 'deepseek-chat', hint: '需要 API Key' },
+    { id: 'openai', label: '自定义接口', base: 'https://api.openai.com/v1', model: 'gpt-4o-mini', hint: '需要 API Key' },
+    { id: 'ollama', label: '本地服务', base: 'http://127.0.0.1:11434/v1', model: 'qwen2.5:7b', hint: '本地运行' }
   ];
 
   const ANSWER_TYPES = {
@@ -388,26 +388,26 @@
     if (state.staticMode) {
       statusBtn.classList.add('demo');
       statusBtn.classList.remove('online');
-      statusText.textContent = 'Pollinations 在线演示';
-      statusBtn.title = 'GitHub Pages 在线演示：单路在线模型 + 浏览器内 SymPy 校验；匿名限速。';
-      statusBtn.setAttribute('aria-label', '模型连接状态：Pollinations 在线演示');
+      statusText.textContent = '在线';
+      statusBtn.title = '在线';
+      statusBtn.setAttribute('aria-label', '模型连接状态：在线');
       return;
     }
     const configured = isConfigured();
     statusBtn.classList.toggle('online', configured);
     statusBtn.classList.toggle('demo', !configured);
     if (configured) {
-      statusText.textContent = state.settings.model;
-      statusBtn.title = '已配置：' + state.settings.baseUrl + ' · ' + state.settings.model;
-      statusBtn.setAttribute('aria-label', '模型连接状态：' + state.settings.model);
+      statusText.textContent = '在线';
+      statusBtn.title = '已连接';
+      statusBtn.setAttribute('aria-label', '模型连接状态：在线');
     } else if (state.serverConfig) {
-      statusText.textContent = '本地示例模式';
-      statusBtn.title = '未连接模型；可体验本地示例题。点击打开设置。';
-      statusBtn.setAttribute('aria-label', '模型连接状态：本地示例模式');
+      statusText.textContent = '示例';
+      statusBtn.title = '本地示例';
+      statusBtn.setAttribute('aria-label', '模型连接状态：示例');
     } else {
-      statusText.textContent = '后端未连接';
-      statusBtn.title = '无法连接本地服务。请运行 python server.py。';
-      statusBtn.setAttribute('aria-label', '模型连接状态：后端未连接');
+      statusText.textContent = '离线';
+      statusBtn.title = '打开设置';
+      statusBtn.setAttribute('aria-label', '模型连接状态：离线');
     }
   }
 
@@ -1176,7 +1176,7 @@
 
   async function staticSolve(question) {
     const started = Date.now();
-    addStage({ id: 'static-model', label: '调用在线模型', detail: 'Pollinations · 单路求解', progress: 18 });
+    addStage({ id: 'static-model', label: '调用在线模型', detail: '单路求解', progress: 18 });
     const response = await fetch('https://text.pollinations.ai/openai/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1200,7 +1200,7 @@
       } catch (err) {
         /* ignore */
       }
-      throw new Error(detail + '（Pollinations 匿名通道约 45 秒限 1 次）');
+      throw new Error(detail + '（在线服务约 45 秒限 1 次）');
     }
     const payload = await response.json();
     const content = (payload.choices && payload.choices[0] && payload.choices[0].message && payload.choices[0].message.content) || '';
@@ -1464,7 +1464,7 @@
 
   function openSettings() {
     if (state.publicMode || state.staticMode) {
-      toast('在线演示固定使用 Pollinations，无需配置');
+      toast('在线演示');
       return;
     }
     populateSettingsForm();

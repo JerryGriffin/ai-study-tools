@@ -2653,3 +2653,13 @@ body:has(#errorCard:not([hidden])) .sample-block {
 .report-footnote {
   display: none !important;
 }
+.hero .eyebrow,
+.scope-hint,
+.input-hint,
+.answer-note,
+.progress-note,
+.report .muted-note {
+  display: none !important;
+}
+.hero h1 { font-size: clamp(30px, 4vw, 42px); }
+.brand-text small { display: none !important; }

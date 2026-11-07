@@ -8,7 +8,7 @@
   <title>作业校验台 · K12 Homework Lab</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230f172a'/%3E%3Cpath d='M32 12l15 6v11c0 10-6.5 17.5-15 21-8.5-3.5-15-11-15-21V18l15-6z' fill='none' stroke='%232dd4bf' stroke-width='3.2'/%3E%3Cpath d='M24 32l5.5 5.5L41 26' fill='none' stroke='%23f8fafc' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="vendor/katex/katex.min.css" />
-  <link rel="stylesheet" href="styles.css?v=8" />
+  <link rel="stylesheet" href="styles.css?v=10" />
 </head>
 <body>
   <svg class="svg-sprite" aria-hidden="true" focusable="false">
@@ -65,11 +65,8 @@
     <section class="left-col" aria-label="题目与历史">
       <div class="hero">
         <p class="eyebrow"><span class="pulse-dot"></span> VERIFICATION-FIRST TUTOR</p>
-        <h1>先解题，再验证，<br /><em>最后才给答案。</em></h1>
-        <p class="lede">
-          多路独立求解、符号级校验、交叉复核。证据不足时，系统会明确告诉你「需要核对」，
-          而不是自信地给一个可能错误的答案。
-        </p>
+        <h1>作业校验台</h1>
+        <p class="lede">输入题目，查看答案与校验依据。</p>
       </div>
 
       <div class="input-card">
@@ -250,9 +247,7 @@
       </header>
       <div class="modal-body">
         <p class="settings-intro">
-          默认使用 <strong>Kilo模型</strong>（免 Key），也可以切换 OpenCode 本机通道或填写任意 OpenAI 兼容接口。
-          推荐数学能力较强的模型（Qwen2.5-Math / Omni-Edu / DeepSeek），再由本工具的独立校验层兜底。
-          没有网络或模型时仍可体验本地示例题。
+          默认使用在线服务，也可以填写任意 通用兼容接口；没有网络时仍可体验本地示例题。
         </p>
         <div class="preset-row" id="presetRow"></div>
         <label class="field">
@@ -262,7 +257,7 @@
         <div class="field-grid">
           <label class="field">
             <span>模型名称</span>
-            <input id="setModel" type="text" spellcheck="false" placeholder="如 qwen2.5-math-7b-instruct" autocomplete="off" />
+            <input id="setModel" type="text" spellcheck="false" placeholder="填写模型名称" autocomplete="off" />
           </label>
           <label class="field">
             <span>API Key</span>
@@ -305,6 +300,6 @@
   </dialog>
 
   <script src="vendor/katex/katex.min.js" defer></script>
-  <script src="app.js?v=9" defer></script>
+  <script src="app.js?v=11" defer></script>
 </body>
 </html>
