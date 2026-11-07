@@ -483,7 +483,7 @@
     state.hits = hits; renderCitations();
     if (state.api) {
       setStatus('调用模型中…');
-      addMsg('sys', '检索到 ' + hits.length + ' 条依据，已连同教学指令经本站代理送入模型。');
+      addMsg('sys', '检索到 ' + hits.length + ' 条依据，已连同教学指令送入模型。');
       try {
         var ans = await callModel(q, hits);
         addMsg('ai', esc(ans));
