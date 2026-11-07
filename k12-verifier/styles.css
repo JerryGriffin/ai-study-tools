@@ -2559,3 +2559,88 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------- v1.4.0 简洁问答界面（仿 DeepTutor） ---------- */
+.workspace {
+  display: block;
+  max-width: 920px;
+  height: auto;
+  min-height: calc(100dvh - var(--topbar-h));
+  padding: 24px 18px 56px;
+  overflow: visible;
+}
+.left-col,
+.right-col {
+  overflow: visible;
+  padding: 0;
+}
+.left-col {
+  max-width: 860px;
+  margin: 0 auto;
+}
+.right-col {
+  max-width: 860px;
+  margin: 20px auto 0;
+}
+.report-empty,
+.history-card,
+.left-footnote,
+.topbar-note {
+  display: none !important;
+}
+.hero {
+  text-align: center;
+  padding: 10px 0 22px;
+}
+.hero .lede {
+  margin-left: auto;
+  margin-right: auto;
+}
+.eyebrow {
+  justify-content: center;
+}
+.input-card {
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(20, 35, 70, 0.07);
+}
+.sample-block {
+  max-width: 720px;
+  margin: 18px auto 0;
+  width: 100%;
+}
+.progress-card,
+.report,
+.error-card {
+  margin-top: 8px;
+}
+@media (max-width: 620px) {
+  .workspace { padding: 16px 12px 44px; }
+  .hero h1 { font-size: 32px; }
+  .input-card { padding: 12px; border-radius: 14px; }
+}
+
+/* 进入结果/进度后收起欢迎区，让界面更像对话 */
+body:has(#report:not([hidden])) .hero,
+body:has(#progressCard:not([hidden])) .hero,
+body:has(#errorCard:not([hidden])) .hero,
+body:has(#report:not([hidden])) .sample-block,
+body:has(#progressCard:not([hidden])) .sample-block,
+body:has(#errorCard:not([hidden])) .sample-block {
+  display: none !important;
+}
+
+/* 结果卡片改为浅色，保持简洁对话风格 */
+.answer-card {
+  background: var(--card, #fff);
+  color: var(--ink, #0f172a);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.answer-card::after { display: none; }
+.answer-card-head span:last-child { color: var(--blue); }
+.final-answer { color: var(--ink); }
+.answer-note { color: var(--muted); }
+.final-answer .katex,
+.final-answer .katex * { color: var(--ink); }
+.answer-card-head { color: var(--muted); }

@@ -2937,3 +2937,43 @@ svg {
   background-clip: content-box;
   border: 2px solid transparent;
 }
+
+/* ---------- v1.4.0 简洁对话界面（仿 DeepTutor） ---------- */
+.shell,
+.app.rail-hidden .shell {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+.sidebar {
+  position: fixed;
+  z-index: 56;
+  top: var(--topbar-h);
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 84vw;
+  background: var(--paper-soft);
+  box-shadow: 20px 0 50px rgba(20, 20, 15, 0.16);
+  transform: translateX(-102%);
+  transition: transform 0.25s ease;
+}
+.app.sidebar-open .sidebar {
+  transform: none;
+}
+.rail {
+  display: none !important;
+}
+.rail-toggle {
+  display: none !important;
+}
+.menu-btn {
+  display: inline-grid;
+}
+.main {
+  width: 100%;
+}
+.chat-scroll {
+  scroll-behavior: smooth;
+}
+.welcome {
+  padding-top: clamp(24px, 6vh, 72px);
+}
