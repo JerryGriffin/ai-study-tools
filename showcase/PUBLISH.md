@@ -1,9 +1,9 @@
-# B站发布包 · AI 学习工具四件套
+﻿# B站发布包 · AI 学习工具四件套
 
 ## 成果页
 
 - 线上地址（部署后）：`https://jerrygriffin.github.io/ai-study-tools/showcase/`
-- 已发布 B 站专栏：`https://www.bilibili.com/opus/1268159441440604166`
+- 已发布 B 站专栏：`https://www.bilibili.com/opus/1268162954712317959`
 - 本地文件：`bili-showcase/index.html`
 - 封面：`bili-showcase/cover.png`（1200 × 675，16:9）
 
@@ -104,6 +104,6 @@ https://jerrygriffin.github.io/ai-study-tools/
 
 - 成果页已完成并接入公开静态仓库。
 - 封面已生成。
-- 已发布为 B 站专栏：<https://www.bilibili.com/opus/1268159441440604166>
+- 已发布为 B 站专栏：<https://www.bilibili.com/opus/1268162954712317959>
 - 发布账号：Recapiut；发布时间：2026-11-08 10:26。
 - 后续可继续补发视频版或动态，并把专栏链接放到评论区置顶。
