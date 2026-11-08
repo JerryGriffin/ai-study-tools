@@ -967,11 +967,15 @@
   }
 
   async function readSSE(response, onEvent) {
+    if (!response.body || typeof response.body.getReader !== 'function') {
+      throw new Error('当前浏览器不支持流式读取，请重试或更换浏览器。');
+    }
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
     let eventName = 'message';
     let dataLines = [];
+    let completed = false;
 
     const dispatch = () => {
       if (!dataLines.length) {
@@ -990,31 +994,42 @@
       eventName = 'message';
     };
 
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      let index;
-      while ((index = buffer.indexOf('\n')) >= 0) {
-        const line = buffer.slice(0, index).replace(/\r$/, '');
-        buffer = buffer.slice(index + 1);
-        if (line === '') {
-          dispatch();
-        } else if (line.startsWith('event:')) {
-          eventName = line.slice(6).trim();
-        } else if (line.startsWith('data:')) {
-          dataLines.push(line.slice(5).trimStart());
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        let index;
+        while ((index = buffer.indexOf('\n')) >= 0) {
+          const line = buffer.slice(0, index).replace(/\r$/, '');
+          buffer = buffer.slice(index + 1);
+          if (line === '') {
+            dispatch();
+          } else if (line.startsWith('event:')) {
+            eventName = line.slice(6).trim();
+          } else if (line.startsWith('data:')) {
+            dataLines.push(line.slice(5).trimStart());
+          }
         }
       }
-    }
-    if (buffer.trim()) {
-      if (buffer.startsWith('data:')) dataLines.push(buffer.slice(5).trimStart());
-    }
-    dispatch();
-    try {
-      reader.releaseLock();
-    } catch (err) {
-      /* ignore */
+      if (buffer.trim()) {
+        if (buffer.startsWith('data:')) dataLines.push(buffer.slice(5).trimStart());
+      }
+      dispatch();
+      completed = true;
+    } finally {
+      if (!completed) {
+        try {
+          await reader.cancel();
+        } catch (err) {
+          /* stream already closed */
+        }
+      }
+      try {
+        reader.releaseLock();
+      } catch (err) {
+        /* ignore */
+      }
     }
   }
 

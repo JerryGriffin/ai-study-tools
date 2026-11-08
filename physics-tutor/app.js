@@ -803,6 +803,9 @@
   }
 
   async function readSSE(response, onDelta) {
+    if (!response.body || typeof response.body.getReader !== 'function') {
+      throw new Error('当前浏览器不支持流式读取。请在设置中关闭「流式输出」后重试。');
+    }
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
@@ -829,25 +832,35 @@
       return false;
     };
 
-    while (!finished) {
-      const result = await reader.read();
-      if (result.done) break;
-      buffer += decoder.decode(result.value, { stream: true });
-      const lines = buffer.split(/\r?\n/);
-      buffer = lines.pop();
-      for (const line of lines) {
-        if (handleLine(line)) {
-          finished = true;
-          break;
+    try {
+      while (!finished) {
+        const result = await reader.read();
+        if (result.done) break;
+        buffer += decoder.decode(result.value, { stream: true });
+        const lines = buffer.split(/\r?\n/);
+        buffer = lines.pop();
+        for (const line of lines) {
+          if (handleLine(line)) {
+            finished = true;
+            break;
+          }
         }
       }
-    }
 
-    if (!finished && buffer.trim()) handleLine(buffer);
-    try {
-      reader.releaseLock();
-    } catch (err) {
-      /* ignore */
+      if (!finished && buffer.trim()) handleLine(buffer);
+    } finally {
+      if (!finished) {
+        try {
+          await reader.cancel();
+        } catch (err) {
+          /* stream already closed */
+        }
+      }
+      try {
+        reader.releaseLock();
+      } catch (err) {
+        /* ignore */
+      }
     }
   }
 
