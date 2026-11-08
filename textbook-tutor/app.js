@@ -14,6 +14,11 @@
   var LS_WRONG = 'xuexu.wrongbook';
   var STATIC_HOST = /\.github\.io$/i.test(location.hostname) || /(?:^|[?&])demo=1(?:&|$)/.test(location.search);
 
+  if (!KG || !Array.isArray(KG.nodes) || !KG.nodes.length) {
+    document.body.innerHTML = '<p style="padding:40px;font-family:sans-serif">知识库加载失败，请确认 knowledge.js 与 index.html 在同一目录，然后刷新页面。</p>';
+    return;
+  }
+
   var MODES = [
     { id: 'solve', name: '直接解题', desc: '完整步骤与答案',
       prompt: '你是面向中国高中与大学理工科学生的学科辅导老师。请依据【知识库片段】完整求解题目：写出关键步骤、所用公式与最终答案。每个结论后用 [编号] 标注依据的片段。片段不足时明确说明，不得编造教材原文。' },
@@ -451,6 +456,33 @@
     }).join('\n\n');
     return head + '\n' + body + '\n\n下一步：稍后重试在线模型，或在顶栏「设置」接入自定义模型，即可生成教学回应。';
   }
+  function retryableStatus(status) {
+    return status === 408 || status === 425 || status === 429 || status === 500 ||
+      status === 502 || status === 503 || status === 504;
+  }
+  function wait(ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); }
+  function retryDelay(resp, attempt) {
+    var raw = resp && resp.headers ? resp.headers.get('retry-after') : '';
+    var seconds = Number(raw);
+    if (Number.isFinite(seconds)) return Math.max(0, Math.min(8000, Math.round(seconds * 1000)));
+    return 700 * Math.pow(2, attempt - 1);
+  }
+  async function httpErrorText(resp) {
+    var msg = '';
+    try {
+      var text = await resp.text();
+      try {
+        var j = JSON.parse(text);
+        var err = j && j.error;
+        if (err && typeof err === 'object') msg = err.message || err.code || JSON.stringify(err);
+        else msg = err || (j && j.message) || text;
+      } catch (e2) {
+        msg = text;
+      }
+    } catch (e) { /* body unavailable */ }
+    msg = String(msg || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 360);
+    return msg || ('HTTP ' + resp.status);
+  }
   async function callModel(q, hits) {
     var mode = MODES.filter(function (m) { return m.id === state.mode; })[0];
     var sys = mode.prompt + '\n\n【知识库片段】\n' + (contextBlock(hits) || '（无命中片段，请说明依据不足）') +
@@ -459,45 +491,59 @@
       .concat(state.history.slice(-6))
       .concat([{ role: 'user', content: q }]);
     // GitHub Pages 没有 Python 代理，走 Pollinations 同源直连；本地走 /api/chat 代理。
-    var resp;
+    var resp = null;
     var ctrl = new AbortController();
-    var timer = setTimeout(function () { ctrl.abort(); }, 75000);
+    var timedOut = false;
+    var timer = setTimeout(function () { timedOut = true; ctrl.abort(); }, 75000);
+    var maxAttempts = 3;
     try {
-      if (STATIC_HOST || state.api.direct) {
-        var endpoint = String(state.api.base || '').replace(/\/$/, '') + '/chat/completions';
-        resp = await fetch(endpoint, {
-          method: 'POST', cache: 'no-store', signal: ctrl.signal,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: state.api.model || 'openai',
-            messages: msgs,
-            temperature: 0.4,
-            stream: false
-          })
-        });
-      } else {
-        resp = await fetch('/api/chat', {
-          method: 'POST', cache: 'no-store', signal: ctrl.signal,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ base: state.api.base, key: state.api.key, model: state.api.model,
-            messages: msgs, temperature: 0.4 })
-        });
+      for (var attempt = 1; attempt <= maxAttempts; attempt += 1) {
+        if (ctrl.signal.aborted) throw new Error('请求超时（75 秒）。在线模型可能繁忙，请稍后重试。');
+        try {
+          if (STATIC_HOST || state.api.direct) {
+            var endpoint = String(state.api.base || '').replace(/\/$/, '') + '/chat/completions';
+            resp = await fetch(endpoint, {
+              method: 'POST', cache: 'no-store', signal: ctrl.signal,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                model: state.api.model || 'openai',
+                messages: msgs,
+                temperature: 0.4,
+                stream: false
+              })
+            });
+          } else {
+            resp = await fetch('/api/chat', {
+              method: 'POST', cache: 'no-store', signal: ctrl.signal,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ base: state.api.base, key: state.api.key, model: state.api.model,
+                messages: msgs, temperature: 0.4 })
+            });
+          }
+        } catch (e) {
+          if (timedOut) throw new Error('请求超时（75 秒）。在线模型可能繁忙，请稍后重试。');
+          if (attempt < maxAttempts) { await wait(700 * Math.pow(2, attempt - 1)); continue; }
+          throw e;
+        }
+        if (resp.ok) break;
+        var detail = await httpErrorText(resp);
+        if (!retryableStatus(resp.status) || attempt === maxAttempts) throw new Error(detail);
+        await wait(retryDelay(resp, attempt));
       }
+      if (!resp) throw new Error('模型服务没有返回响应。');
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      var raw = await resp.text();
+      var info = null;
+      try { info = JSON.parse(raw); }
+      catch (e) { throw new Error('模型返回了无法解析的响应，请确认接口地址指向 OpenAI 兼容服务。'); }
+      if (info && info.error) {
+        var detail = typeof info.error === 'string' ? info.error : (info.error.message || JSON.stringify(info.error));
+        throw new Error(detail);
+      }
+      return (info.choices && info.choices[0] && info.choices[0].message && info.choices[0].message.content) || '（模型返回为空）';
     } finally {
       clearTimeout(timer);
     }
-    if (!resp.ok) {
-      var msg = '';
-      try {
-        var j = await resp.json();
-        var err = j && j.error;
-        if (err && typeof err === 'object') msg = err.message || err.code || JSON.stringify(err);
-        else msg = err || (j && j.message) || ('HTTP ' + resp.status);
-      } catch (e) { msg = 'HTTP ' + resp.status; }
-      throw new Error(msg);
-    }
-    var data = await resp.json();
-    return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '（模型返回为空）';
   }
 
   function activeInput() { return document.body.classList.contains('in-chat') ? $('input') : $('inputWelcome'); }
@@ -511,33 +557,39 @@
     el.value = '';
     enterChat();
     state.busy = true; $('sendBtn').disabled = true; $('sendWelcome').disabled = true;
-    addMsg('user', esc(q));
-    setStatus('检索中…');
-    var idx = buildIndex(scopedDocs().concat(state.imported));
-    var hits = search(idx, q, 4);
-    state.hits = hits; renderCitations();
-    if (state.api) {
-      setStatus('调用模型中…');
-      addMsg('sys', '检索到 ' + hits.length + ' 条依据，已连同教学指令送入模型。');
-      try {
-        var ans = await callModel(q, hits);
-        addMsg('ai', esc(ans));
-        state.history.push({ role: 'user', content: q }, { role: 'assistant', content: ans });
-        setStatus('完成');
-      } catch (e) {
-        var reason = String(e && e.message ? e.message : e);
-        if (/FREE_LIMIT|Free limit|限速|402/i.test(reason)) {
-          reason = '在线模型被限速（约 45 秒 1 次），请稍后重试';
+    try {
+      addMsg('user', esc(q));
+      setStatus('检索中…');
+      var idx = buildIndex(scopedDocs().concat(state.imported));
+      var hits = search(idx, q, 4);
+      state.hits = hits; renderCitations();
+      if (state.api) {
+        setStatus('调用模型中…');
+        addMsg('sys', '检索到 ' + hits.length + ' 条依据，已连同教学指令送入模型。');
+        try {
+          var ans = await callModel(q, hits);
+          addMsg('ai', esc(ans));
+          state.history.push({ role: 'user', content: q }, { role: 'assistant', content: ans });
+          if (state.history.length > 12) state.history = state.history.slice(-12);
+          setStatus('完成');
+        } catch (e) {
+          var reason = String(e && e.message ? e.message : e);
+          if (/FREE_LIMIT|Free limit|限速|402/i.test(reason)) {
+            reason = '在线模型被限速（约 45 秒 1 次），请稍后重试';
+          }
+          addMsg('sys', '模型调用失败：' + esc(reason) + '。已降级为检索片段，不伪造回答。');
+          addMsg('ai', esc(demoAnswer(q, hits)));
+          setStatus('模型失败，已降级');
         }
-        addMsg('sys', '模型调用失败：' + esc(reason) + '。已降级为检索片段，不伪造回答。');
+      } else {
         addMsg('ai', esc(demoAnswer(q, hits)));
-        setStatus('模型失败，已降级');
+        setStatus('检索演示完成（未配置模型）');
       }
-    } else {
-      addMsg('ai', esc(demoAnswer(q, hits)));
-      setStatus('检索演示完成（未配置模型）');
+    } finally {
+      state.busy = false;
+      $('sendBtn').disabled = false;
+      $('sendWelcome').disabled = false;
     }
-    state.busy = false; $('sendBtn').disabled = false; $('sendWelcome').disabled = false;
   }
 
   /* ---------- 自备资料导入（全程本地） ---------- */
@@ -555,32 +607,58 @@
     return out;
   }
   function handleFiles(files) {
-    var pending = files.length;
-    if (!pending) return;
-    Array.prototype.forEach.call(files, function (f) {
+    var list = Array.prototype.slice.call(files || []);
+    if (!list.length) return;
+    var pending = list.length;
+    var addedCount = 0;
+    var failed = [];
+    function finish() {
+      pending -= 1;
+      if (pending > 0) return;
+      renderSources(); renderFilters();
+      if (addedCount) {
+        setStatus('已导入 ' + addedCount + ' 个片段（仅本机，未上传）');
+        addMsg('sys', '已把 ' + list.length + ' 个文件切分为 ' + state.imported.length +
+          ' 个本地片段并加入检索池。这些片段不会上传，也不会写入任何分发文件。');
+      } else if (!failed.length) {
+        setStatus('没有可导入的文本内容');
+        addMsg('sys', '所选文件没有可用的文本内容，请换一个 UTF-8 文本或 JSON 文件。');
+      }
+      if (failed.length) {
+        setStatus(failed.length + ' 个文件读取失败');
+        addMsg('sys', '读取失败：' + failed.map(esc).join('、') + '。请确认文件是 UTF-8 文本或 JSON。');
+      }
+    }
+    list.forEach(function (f) {
       var r = new FileReader();
       r.onload = function () {
-        var txt = String(r.result || '');
-        if (/\.json$/i.test(f.name)) {
-          try {
-            var j = JSON.parse(txt);
-            if (Array.isArray(j)) {
-              txt = j.map(function (o) {
-                return typeof o === 'string' ? o : (o.text || o.content || o.summary || o.question || JSON.stringify(o));
-              }).join('\n\n');
-            }
-          } catch (e) { /* 按纯文本处理 */ }
+        try {
+          var txt = String(r.result || '');
+          if (/\.json$/i.test(f.name)) {
+            try {
+              var j = JSON.parse(txt);
+              if (Array.isArray(j)) {
+                txt = j.map(function (o) {
+                  return typeof o === 'string' ? o : (o.text || o.content || o.summary || o.question || JSON.stringify(o));
+                }).join('\n\n');
+              }
+            } catch (e) { /* 按纯文本处理 */ }
+          }
+          var added = splitText(txt, f.name, 'user_local');
+          state.imported = state.imported.concat(added);
+          addedCount += added.length;
+        } catch (e) {
+          failed.push(f.name);
         }
-        var added = splitText(txt, f.name, 'user_local');
-        state.imported = state.imported.concat(added);
-        pending--;
-        if (!pending) {
-          renderSources(); renderFilters();
-          setStatus('已导入 ' + added.length + ' 个片段（仅本机，未上传）');
-          addMsg('sys', '已把 ' + esc(f.name) + ' 等文件切分为 ' + state.imported.length + ' 个本地片段并加入检索池。这些片段不会上传，也不会写入任何分发文件。');
-        }
+        finish();
       };
-      r.readAsText(f, 'utf-8');
+      r.onerror = function () { failed.push(f.name); finish(); };
+      try {
+        r.readAsText(f, 'utf-8');
+      } catch (e) {
+        failed.push(f.name);
+        finish();
+      }
     });
   }
 
@@ -597,11 +675,15 @@
     if (STATIC_HOST) {
       state.staticMode = true;
       state.api = { base: 'https://text.pollinations.ai/openai', key: '', model: 'openai', direct: true };
-    } else if (!state.api) {
+    } else if (!state.api || typeof state.api !== 'object' || !state.api.base) {
       state.api = { base: 'https://api.kilo.ai/api/gateway', key: '', model: 'kilo-auto/free' };
     }
     state.wrong = readLS(LS_WRONG, []);
-    if (!state.wrong || !state.wrong.length) state.wrong = readLS('xuexu.wrongbook.0.2.0', []) || [];
+    if (!Array.isArray(state.wrong)) state.wrong = [];
+    if (!state.wrong.length) {
+      state.wrong = readLS('xuexu.wrongbook.0.2.0', []) || [];
+      if (!Array.isArray(state.wrong)) state.wrong = [];
+    }
     renderModes(); renderFilters(); renderSources(); renderCitations(); renderKG(); renderWrong();
 
     $('apiBase').value = state.api ? state.api.base : '';

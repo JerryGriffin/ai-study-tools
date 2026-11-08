@@ -1018,6 +1018,29 @@
     }
   }
 
+  function withTimeoutSignal(timeoutMs) {
+    const controller = new AbortController();
+    const outer = state.abort;
+    let timedOut = false;
+    const onAbort = () => controller.abort();
+    if (outer) {
+      if (outer.signal.aborted) controller.abort();
+      else outer.signal.addEventListener('abort', onAbort, { once: true });
+    }
+    const timer = setTimeout(() => {
+      timedOut = true;
+      controller.abort();
+    }, timeoutMs);
+    return {
+      signal: controller.signal,
+      didTimeout: () => timedOut,
+      cleanup: () => {
+        clearTimeout(timer);
+        if (outer) outer.signal.removeEventListener('abort', onAbort);
+      }
+    };
+  }
+
   async function requestSolve(question, image, forceDemo) {
     const config = forceDemo
       ? { baseUrl: '', model: '', apiKey: '', samples: 1, critic: false }
@@ -1036,56 +1059,71 @@
       config: config,
       stream: true
     };
-    const response = await fetch('/api/solve', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
-      body: JSON.stringify(payload),
-      signal: state.abort.signal
-    });
+    const guard = withTimeoutSignal(150000);
+    try {
+      const response = await fetch('/api/solve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
+        body: JSON.stringify(payload),
+        signal: guard.signal
+      });
 
-    const contentType = response.headers.get('content-type') || '';
-    if (!response.ok) {
-      let message = 'HTTP ' + response.status;
-      try {
+      const contentType = response.headers.get('content-type') || '';
+      if (!response.ok) {
+        let message = 'HTTP ' + response.status;
+        try {
+          const data = await response.json();
+          message = data.error || data.message || message;
+        } catch (err) {
+          /* ignore */
+        }
+        throw new Error(message);
+      }
+
+      if (!contentType.includes('event-stream')) {
         const data = await response.json();
-        message = data.error || data.message || message;
-      } catch (err) {
-        /* ignore */
-      }
-      throw new Error(message);
-    }
-
-    if (!contentType.includes('event-stream')) {
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
-      renderReport(data);
-      return;
-    }
-
-    await readSSE(response, (event, data) => {
-      if (event === 'stage') {
-        addStage(data);
-      } else if (event === 'candidate') {
-        addCandidate(data);
-      } else if (event === 'result') {
+        if (data.error) throw new Error(data.error);
         renderReport(data);
-      } else if (event === 'error') {
-        state.requestError = data.message || '校验失败。';
+        return;
       }
-    });
 
-    if (state.requestError) throw new Error(state.requestError);
-    if (!state.result) throw new Error('求解流程提前结束，没有收到结果。');
+      await readSSE(response, (event, data) => {
+        if (event === 'stage') {
+          addStage(data);
+        } else if (event === 'candidate') {
+          addCandidate(data);
+        } else if (event === 'result') {
+          renderReport(data);
+        } else if (event === 'error') {
+          state.requestError = data.message || '校验失败。';
+        }
+      });
+
+      if (state.requestError) throw new Error(state.requestError);
+      if (!state.result) throw new Error('求解流程提前结束，没有收到结果。');
+    } catch (err) {
+      if (guard.didTimeout()) throw new Error('请求超时（150 秒）。请稍后重试，或检查本地服务是否正常。');
+      throw err;
+    } finally {
+      guard.cleanup();
+    }
   }
 
   function loadScript(src) {
     return new Promise((resolve, reject) => {
+      let timer = null;
+      const done = (fn, value) => {
+        if (timer) clearTimeout(timer);
+        fn(value);
+      };
+      timer = setTimeout(() => reject(new Error('脚本加载超时：' + src)), 30000);
       const existing = document.querySelector('script[data-src="' + src + '"]');
       if (existing) {
-        if (existing.dataset.loaded === '1') resolve();
-        else {
-          existing.addEventListener('load', () => resolve(), { once: true });
-          existing.addEventListener('error', () => reject(new Error('脚本加载失败')), { once: true });
+        if (existing.dataset.loaded === '1') {
+          done(resolve);
+        } else {
+          existing.addEventListener('load', () => done(resolve), { once: true });
+          existing.addEventListener('error', () => done(reject, new Error('脚本加载失败：' + src)), { once: true });
         }
         return;
       }
@@ -1094,16 +1132,16 @@
       script.dataset.src = src;
       script.onload = () => {
         script.dataset.loaded = '1';
-        resolve();
+        done(resolve);
       };
-      script.onerror = () => reject(new Error('脚本加载失败：' + src));
+      script.onerror = () => done(reject, new Error('脚本加载失败：' + src));
       document.head.appendChild(script);
     });
   }
 
   async function getPyodide() {
     if (state.pyodidePromise) return state.pyodidePromise;
-    state.pyodidePromise = (async () => {
+    const work = (async () => {
       if (!window.loadPyodide) {
         await loadScript('https://cdn.jsdelivr.net/pyodide/v0.28.2/full/pyodide.js');
       }
@@ -1116,6 +1154,13 @@
       await pyodide.runPythonAsync("import sys; sys.path.insert(0, '/'); import verifier");
       return pyodide;
     })();
+    state.pyodidePromise = new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('数学引擎加载超时（120 秒），请检查网络后重试。')), 120000);
+      work.then(
+        (value) => { clearTimeout(timer); resolve(value); },
+        (err) => { clearTimeout(timer); reject(err); }
+      );
+    });
     try {
       return await state.pyodidePromise;
     } catch (err) {
@@ -1177,21 +1222,30 @@
   async function staticSolve(question) {
     const started = Date.now();
     addStage({ id: 'static-model', label: '调用在线模型', detail: '单路求解', progress: 18 });
-    const response = await fetch('https://text.pollinations.ai/openai/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'openai',
-        messages: [
-          { role: 'system', content: staticSolverSystem() },
-          { role: 'user', content: '学段：' + state.grade + '\n学科：' + state.subject + '\n题目：' + question }
-        ],
-        temperature: 0.1,
-        max_tokens: 1800,
-        stream: false
-      }),
-      signal: state.abort ? state.abort.signal : undefined
-    });
+    const guard = withTimeoutSignal(90000);
+    let response;
+    try {
+      response = await fetch('https://text.pollinations.ai/openai/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'openai',
+          messages: [
+            { role: 'system', content: staticSolverSystem() },
+            { role: 'user', content: '学段：' + state.grade + '\n学科：' + state.subject + '\n题目：' + question }
+          ],
+          temperature: 0.1,
+          max_tokens: 1800,
+          stream: false
+        }),
+        signal: guard.signal
+      });
+    } catch (err) {
+      if (guard.didTimeout()) throw new Error('请求超时（90 秒）。在线模型可能繁忙，请稍后重试。');
+      throw err;
+    } finally {
+      guard.cleanup();
+    }
     if (!response.ok) {
       let detail = 'HTTP ' + response.status;
       try {
@@ -1203,6 +1257,10 @@
       throw new Error(detail + '（在线服务约 45 秒限 1 次）');
     }
     const payload = await response.json();
+    if (payload && payload.error) {
+      const detail = typeof payload.error === 'string' ? payload.error : (payload.error.message || JSON.stringify(payload.error));
+      throw new Error(detail);
+    }
     const content = (payload.choices && payload.choices[0] && payload.choices[0].message && payload.choices[0].message.content) || '';
     let data = parseJsonLoose(content);
     let finalAnswer = String(data.final_answer || data.answer || '').trim();

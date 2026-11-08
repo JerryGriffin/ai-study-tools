@@ -787,6 +787,9 @@
 
   function friendlyError(err) {
     const message = err && err.message ? err.message : String(err);
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      return '当前设备处于离线状态。请检查网络连接，或继续使用离线演示。';
+    }
     if (/Failed to fetch|NetworkError|Load failed|fetch failed|Network request failed/i.test(message)) {
       return '无法连接到模型服务。请确认服务已经启动、地址填写正确；如果浏览器拦截了跨域请求，请运行 python serve.py，然后把 Base URL 填成 /api。';
     }
@@ -811,13 +814,18 @@
       const payload = trimmed.slice(5).trim();
       if (!payload) return false;
       if (payload === '[DONE]') return true;
+      let json = null;
       try {
-        const json = JSON.parse(payload);
-        const delta = extractDelta(json);
-        if (delta) onDelta(delta);
+        json = JSON.parse(payload);
       } catch (err) {
-        /* ignore malformed keep-alives */
+        return false; /* ignore malformed keep-alives */
       }
+      if (json && json.error) {
+        const detail = typeof json.error === 'string' ? json.error : (json.error.message || JSON.stringify(json.error));
+        throw new Error('模型服务返回错误：' + detail);
+      }
+      const delta = extractDelta(json);
+      if (delta) onDelta(delta);
       return false;
     };
 
@@ -843,6 +851,45 @@
     }
   }
 
+  function isRetryableStatus(status) {
+    return status === 408 || status === 425 || status === 429 || status === 500 ||
+      status === 502 || status === 503 || status === 504;
+  }
+
+  function retryAfterMs(response) {
+    const raw = response && response.headers ? response.headers.get('retry-after') : '';
+    if (!raw) return 0;
+    const seconds = Number(raw);
+    if (Number.isFinite(seconds)) return clamp(Math.round(seconds * 1000), 0, 8000);
+    const at = Date.parse(raw);
+    if (Number.isFinite(at)) return clamp(at - Date.now(), 0, 8000);
+    return 0;
+  }
+
+  function abortableSleep(ms, signal) {
+    if (!ms) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const fail = () => {
+        clearTimeout(timer);
+        if (signal) signal.removeEventListener('abort', fail);
+        const err = new Error('Aborted');
+        err.name = 'AbortError';
+        reject(err);
+      };
+      const timer = setTimeout(() => {
+        if (signal) signal.removeEventListener('abort', fail);
+        resolve();
+      }, ms);
+      if (signal) {
+        if (signal.aborted) {
+          fail();
+          return;
+        }
+        signal.addEventListener('abort', fail, { once: true });
+      }
+    });
+  }
+
   async function requestCompletion(messages, onDelta, signal, cfg, baseUrlOverride) {
     const options = cfg || state.settings;
     const endpoint = apiEndpoint(baseUrlOverride || options.baseUrl);
@@ -857,32 +904,71 @@
       stream: !!options.stream
     };
 
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: apiHeaders(options),
-      body: JSON.stringify(body),
-      signal
-    });
+    let response = null;
+    let lastError = null;
+    const maxAttempts = 3;
+    for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+      if (signal && signal.aborted) {
+        const err = new Error('Aborted');
+        err.name = 'AbortError';
+        throw err;
+      }
+      try {
+        response = await fetch(endpoint, {
+          method: 'POST',
+          headers: apiHeaders(options),
+          body: JSON.stringify(body),
+          signal
+        });
+      } catch (err) {
+        if (err && err.name === 'AbortError') throw err;
+        lastError = err;
+        if (attempt < maxAttempts - 1) {
+          await abortableSleep(700 * Math.pow(2, attempt), signal);
+          continue;
+        }
+        throw err;
+      }
 
-    if (!response.ok) {
+      if (response.ok) break;
+
       let text = '';
       try {
         text = await response.text();
       } catch (err) {
         text = '';
       }
-      throw new Error(formatHttpError(response.status, text));
+      const httpError = new Error(formatHttpError(response.status, text));
+      httpError.status = response.status;
+      if (!isRetryableStatus(response.status) || attempt === maxAttempts - 1) throw httpError;
+      lastError = httpError;
+      const wait = retryAfterMs(response) || (700 * Math.pow(2, attempt));
+      await abortableSleep(wait, signal);
     }
+
+    if (!response || !response.ok) throw lastError || new Error('模型服务没有返回响应。');
 
     const contentType = response.headers.get('content-type') || '';
     if (!options.stream || (contentType.includes('application/json') && !contentType.includes('event-stream'))) {
-      const data = await response.json();
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (err) {
+        throw new Error('模型返回了无法解析的响应，请确认接口地址指向 OpenAI 兼容服务。');
+      }
+      if (data && data.error) {
+        const detail = typeof data.error === 'string' ? data.error : (data.error.message || JSON.stringify(data.error));
+        throw new Error('模型服务返回错误：' + detail);
+      }
       const content = extractContent(data);
       if (!content) throw new Error('模型返回了空内容。请检查模型名称，或换一个兼容 OpenAI 的接口。');
       onDelta(content);
       return;
     }
 
+    if (!response.body || typeof response.body.getReader !== 'function') {
+      throw new Error('当前浏览器不支持流式读取。请在设置中关闭「流式输出」后重试。');
+    }
     await readSSE(response, onDelta);
   }
 
