@@ -31,10 +31,10 @@
 - 用途：教材章节浏览、知识点检索与辅导界面。
 - 位置：`textbook-tutor/`。
 - 来源：<https://github.com/Hex1um/edu-llm>
-- 许可证：MIT License。
+- 许可证：MIT License（仅适用于该上游来源部分）。
 - 版权：Copyright (c) 2026 edu-llm contributors。
-- 许可证全文与修改说明：`textbook-tutor/LICENSE`、`textbook-tutor/NOTICE.md`。
-- 说明：该目录中源自 edu-llm 的代码与内容仍按 MIT 提供；AI Study Tools 的其他部分仍为专有许可。
+- 许可证全文与第三方声明：`textbook-tutor/NOTICE.md`。
+- 说明：`textbook-tutor/` 整体与 AI Study Tools 主项目一致，采用专有许可，不再以 MIT 单独分发；其中源自 edu-llm 的代码仍按 MIT 提供，MIT 文本仅适用于该来源部分。
 
 ## 第三方模型与服务
 

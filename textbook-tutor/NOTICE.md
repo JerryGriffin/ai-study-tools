@@ -1,26 +1,54 @@
-﻿# NOTICE · 教材辅导（学序）的来源与许可
+﻿# NOTICE · 第三方来源与许可
 
-本目录（`textbook-tutor/`）合并自开源项目：
+本项目（AI Study Tools · 教材辅导「学序」）整体采用专有许可，详见本目录
+[LICENSE](LICENSE)。`textbook-tutor/` 不再以 MIT 作为项目许可证。
 
-- **Hex1um/edu-llm** — <https://github.com/Hex1um/edu-llm>
-- 原项目许可证：MIT License
-- 原项目版权：Copyright (c) 2026 edu-llm contributors
-- 许可证全文：见本目录 [LICENSE](LICENSE)
+## edu-llm 来源部分
 
-本目录中的前端代码、样式、知识库数据和自撰题目/讲解来自该项目；本项目在原项目基础上做了以下修改：
+- 上游项目：**Hex1um/edu-llm** — <https://github.com/Hex1um/edu-llm>
+- 上游许可证：**MIT License**
+- 上游版权：**Copyright (c) 2026 edu-llm contributors**
+- 适用范围：仅限本目录中仍保留的 edu-llm 原始代码与内容。
+- 本项目新增或修改的页面、样式、知识库、检索、模型接入、可靠性改造与自撰讲解 / 练习，归 JerryGriffin H1 所有，按本项目专有许可提供。
 
-- 统一为“教材辅导 · 学序”的精简页面与顶栏导航；
-- 默认接入在线模型（本地 Kilo，GitHub Pages 使用 Pollinations）；
-- 改为同源代理，并为静态演示增加直连模式；
-- 精简辅导模式、设置面板与说明文字；
-- 调整目录结构与构建脚本路径。
+再分发包含上述 edu-llm 来源代码的副本时，必须保留本 NOTICE 中的版权声明与
+MIT 许可文本。MIT 许可仅适用于该第三方来源部分，不适用于本项目整体。
 
-这些修改由 JerryGriffin H1 完成，并同样按 **MIT License** 提供，以符合原项目 MIT 许可证的要求。
+## MIT License（仅适用于 edu-llm 来源部分）
+
+```text
+MIT License
+
+Copyright (c) 2026 edu-llm contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 ## 许可边界
 
-- **本目录中源自 edu-llm 的代码与内容仍为 MIT**，你可以按照 MIT 条款使用、修改、分发这部分。
-- **AI Study Tools 的其他部分仍为专有许可（All Rights Reserved）**，详见项目根目录 `LICENSE`。
-- 合并后的整体项目可以作为专有软件分发，但本目录中的 MIT 部分不会因此被“收回”或改为专有；再分发时请保留本 NOTICE 与 MIT 许可证。
-- 原项目 README 明确说明：教材、教辅、真题与评测数据等第三方内容保留各自版权；本项目不包含任何教材/教辅/真题原文。
-- KaTeX、Tesseract.js、OCR 语言数据等第三方组件适用其各自许可证，见根目录 `THIRD-PARTY-NOTICES.md`。
+- **本项目整体**：专有许可，All Rights Reserved；不是 MIT / Apache / GPL 开源项目。
+- **edu-llm 来源部分**：仍按 MIT 提供；MIT 文本保留在本 NOTICE 中。
+- **教材、教辅、真题与评测数据**：保留各自版权；本项目不包含任何教材 / 教辅 / 真题原文。
+- **KaTeX、Tesseract.js、OCR 语言数据等第三方组件**：适用其各自许可证，详见项目根目录
+  `THIRD-PARTY-NOTICES.md`。
+
+## 上游说明
+
+原项目 README 明确说明：教材、教辅、真题与评测数据等第三方内容保留各自版权。
+本项目的知识库仅包含书目、章节骨架与自撰 / 自生成讲解、公式和练习。

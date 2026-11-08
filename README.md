@@ -5,7 +5,7 @@
 - 高数答疑室：静态页面、KaTeX、前端交互、浏览器 OCR 语言模型；
 - 物理答疑室：大学普通物理答疑静态页面、公式与练习；
 - 作业校验台：静态页面、浏览器内 SymPy 校验脚本、预计算示例报告、OCR 语言模型；
-- 教材辅导 · 学序：教材章节、知识点检索与辅导界面（合并自 edu-llm）；
+- 教材辅导 · 学序：教材章节、知识点检索与辅导界面（含 edu-llm 来源代码）；
 - 不包含：服务端代码、提示词、OpenCode 集成、多路求解与交叉复核流水线、完整题库数据。
 
 ## 在线使用
@@ -31,3 +31,5 @@
 - 学校、公司、机构等组织在内部评估、教学、研究或部署前，也必须取得单独书面许可。
 
 完整条款见 [LICENSE](LICENSE)。KaTeX、Tesseract.js、OCR 语言数据等第三方组件仍适用其各自许可证，见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
+
+教材辅导中源自 edu-llm 的第三方代码仍按 MIT 提供；MIT 文本仅适用于该来源部分，见 [textbook-tutor/NOTICE.md](textbook-tutor/NOTICE.md)。本项目整体不采用 MIT。
