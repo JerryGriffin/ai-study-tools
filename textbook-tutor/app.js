@@ -46,6 +46,7 @@
     mode: 'solve', stage: 'all', subject: 'all',
     api: null, docs: [], imported: [], hits: [],
     history: [], wrong: [], busy: false,
+    publisher: 'all',
     activeBook: null, activeChapter: null, staticMode: STATIC_HOST
   };
 
@@ -112,8 +113,11 @@
   }
   function scopedDocs() {
     return state.docs.filter(function (d) {
+      var byPublisher = state.publisher === 'all' ||
+        (d.node && String(d.node.book || '').indexOf('北京师范大学出版社') >= 0);
       return (state.stage === 'all' || d.stage === state.stage) &&
-             (state.subject === 'all' || d.subject === state.subject);
+             (state.subject === 'all' || d.subject === state.subject) &&
+             byPublisher;
     });
   }
   function contextBlock(hits) {
@@ -156,7 +160,11 @@
     $('subjectFilter').innerHTML = '<option value="all">全部学科</option>' +
       keys.map(function (k) { return '<option value="' + esc(k) + '">' + esc(k) + '</option>'; }).join('');
     $('subjectFilter').value = state.subject;
-    $('scopeCount').textContent = '检索范围：' + scopedDocs().length + ' 个知识点 + ' + state.imported.length + ' 个自备片段';
+    var pub = $('publisherFilter');
+    if (pub) pub.value = state.publisher;
+    $('scopeCount').textContent = '检索范围：' + scopedDocs().length + ' 个知识点 + ' +
+      state.imported.length + ' 个自备片段' +
+      (state.publisher === 'bnu' ? ' · 北京师范大学出版社' : '');
   }
   function renderSources() {
     var ncCount = OPEN_SOURCES.filter(function (s) { return s.nc; }).length;
@@ -202,12 +210,17 @@
     var m = {};
     state.docs.forEach(function (d) {
       if (!d.node) return;
+      if (state.publisher === 'bnu' && String(d.node.book || '').indexOf('北京师范大学出版社') < 0) return;
       var b = d.node.book || '其他';
       if (!m[b]) m[b] = { book: b, stage: d.stage, subject: d.subject, docs: [] };
       m[b].docs.push(d);
     });
-    return Object.keys(m).sort(function (a, b) { return a.localeCompare(b, 'zh-CN'); })
-      .map(function (k) { return m[k]; });
+    return Object.keys(m).sort(function (a, b) {
+      var ab = a.indexOf('北京师范大学出版社') >= 0;
+      var bb = b.indexOf('北京师范大学出版社') >= 0;
+      if (ab !== bb) return ab ? -1 : 1;
+      return a.localeCompare(b, 'zh-CN');
+    }).map(function (k) { return m[k]; });
   }
   function renderBooks() {
     $('bookList').innerHTML = bookGroups().map(function (g) {
@@ -589,6 +602,14 @@
 
     $('stageFilter').onchange = function () { state.stage = this.value; renderFilters(); renderKG(); state.hits = []; renderCitations(); };
     $('subjectFilter').onchange = function () { state.subject = this.value; renderFilters(); renderKG(); state.hits = []; renderCitations(); };
+    var pubFilter = $('publisherFilter');
+    if (pubFilter) pubFilter.onchange = function () {
+      state.publisher = this.value;
+      state.activeBook = null;
+      state.activeChapter = null;
+      renderFilters(); renderKG(); renderBooks(); renderChapters(); renderChapterDetail();
+      state.hits = []; renderCitations();
+    };
     $('sendBtn').onclick = send;
     $('sendWelcome').onclick = send;
     $('input').onkeydown = function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };

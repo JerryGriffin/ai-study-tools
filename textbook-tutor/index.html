@@ -18,6 +18,7 @@
       <div class="brand">教材辅导 <span>学序</span></div>
       <div class="top-title" id="coverageLine"></div>
       <div class="top-actions">
+        <button class="topbtn" id="topBnu">北师大教材</button>
         <button class="topbtn" id="topBrowser">教材章节</button>
         <button class="topbtn" id="topCites">依据</button>
         <button class="topbtn" id="topSettings">设置</button>
@@ -29,7 +30,7 @@
     <section class="welcome" id="welcome">
       <div class="welcome-inner">
         <h1>教材辅导</h1>
-        <p class="wsub">高中数理化 · 大学理工</p>
+        <p class="wsub">北京师范大学 · 大学理工教材</p>
         <div class="askbox">
           <div class="modechips" id="modeChipsWelcome"></div>
           <textarea id="inputWelcome" rows="2" placeholder="输入题目或概念…"></textarea>
@@ -110,6 +111,12 @@
           </select>
           <select id="subjectFilter"><option value="all">全部学科</option></select>
         </div>
+        <div class="row">
+          <select id="publisherFilter">
+            <option value="all">全部教材</option>
+            <option value="bnu">北京师范大学出版社</option>
+          </select>
+        </div>
         <p class="hint" id="scopeCount"></p>
       </section>
       <section><h2>本轮依据</h2><div id="citations" class="cites"><p class="hint">提问后显示命中的知识点与章节。</p></div></section>
@@ -159,18 +166,24 @@
 
 </div>
 
-<script src="knowledge.js?v=1.0.0-preview8"></script>
+<script src="knowledge.js?v=1.0.0-preview8&b=1"></script>
 <script src="trends.js?v=1.0.0-preview8"></script>
-<script src="app.js?v=1.0.0-preview8"></script>
+<script src="app.js?v=1.0.0-preview8&b=1"></script>
 <script>
 (function () {
   function click(id) { var el = document.getElementById(id); if (el) el.click(); }
   var browser = document.getElementById('topBrowser');
+  var bnu = document.getElementById('topBnu');
   var cites = document.getElementById('topCites');
   var settings = document.getElementById('topSettings');
   var clear = document.getElementById('topClear');
   var pop = document.getElementById('settingsPop');
   if (browser) browser.onclick = function () { click('navBrowser'); };
+  if (bnu) bnu.onclick = function () {
+    var sel = document.getElementById('publisherFilter');
+    if (sel) { sel.value = 'bnu'; sel.dispatchEvent(new Event('change', { bubbles: true })); }
+    click('navBrowser');
+  };
   if (cites) cites.onclick = function () { click('navCites'); };
   if (clear) clear.onclick = function () { click('newChat'); };
   if (settings) settings.onclick = function (e) {
