@@ -445,6 +445,9 @@
 
   async function loadConfig() {
     try {
+      if (/\.github\.io$/i.test(location.hostname) || /(?:^|[?&])demo=1(?:&|$)/.test(location.search)) {
+        throw new Error('static-host');
+      }
       const response = await fetch('/api/config', { headers: { Accept: 'application/json' } });
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const config = await response.json();
