@@ -59,11 +59,27 @@
   function setStatus(t) { $('statusLine').textContent = t; }
 
   /* ---------- 文档与检索（中文单字 + bigram，BM25） ---------- */
+  var UNIVERSITY_SUBJECT_GROUPS = {
+    '高等数学': '数学', '数学分析': '数学', '一元微积分': '数学',
+    '线性代数': '数学', '概率论与数理统计': '数学', '解析几何': '数学',
+    '常微分方程': '数学', '复变函数与数理方程': '数学',
+    '大学物理': '物理', '普通物理': '物理', '力学基础': '物理',
+    '大学化学': '化学',
+    '程序设计基础': '计算机', '数据结构': '计算机', '操作系统': '计算机',
+    '计算机组成原理': '计算机', '计算机网络': '计算机',
+    '电路': '工程', '电子技术': '工程', '信号与控制': '工程', '机械与制图': '工程'
+  };
+
+  function subjectGroup(subject, stage) {
+    if (stage !== 'university') return subject;
+    return UNIVERSITY_SUBJECT_GROUPS[subject] || '其他';
+  }
+
   function nodeToDoc(n) {
     var dd = (n.deep_dive || []).map(function (x) { return x.title + ' ' + x.text.slice(0, 120); }).join(' ');
     return {
       id: n.id, title: n.name, chapter: n.chapter || '—',
-      stage: n.stage, subject: n.subject, node: n,
+      stage: n.stage, subject: n.subject, subjectGroup: subjectGroup(n.subject, n.stage), node: n,
       source: n.featured ? '精讲专题（人工精校）' : '章节骨架（自撰）', license: 'self-authored',
       text: [n.name, n.book, n.unit, n.chapter, n.summary, n.formula, n.why, n.pitfall,
              (n.concepts || []).join(' '), (n.misconceptions || []).join(' '),
@@ -116,7 +132,7 @@
       var byPublisher = state.publisher === 'all' ||
         (d.node && String(d.node.book || '').indexOf('北京师范大学出版社') >= 0);
       return (state.stage === 'all' || d.stage === state.stage) &&
-             (state.subject === 'all' || d.subject === state.subject) &&
+             (state.subject === 'all' || d.subjectGroup === state.subject) &&
              byPublisher;
     });
   }
@@ -155,8 +171,8 @@
   }
   function renderFilters() {
     var subs = {};
-    state.docs.forEach(function (d) { if (d.subject) subs[d.subject] = 1; });
-    var keys = Object.keys(subs).sort();
+    state.docs.forEach(function (d) { if (d.subjectGroup) subs[d.subjectGroup] = 1; });
+    var keys = Object.keys(subs).sort(function (a, b) { return a.localeCompare(b, 'zh-CN'); });
     $('subjectFilter').innerHTML = '<option value="all">全部学科</option>' +
       keys.map(function (k) { return '<option value="' + esc(k) + '">' + esc(k) + '</option>'; }).join('');
     $('subjectFilter').value = state.subject;
@@ -195,7 +211,7 @@
     $('kgList').innerHTML = list.map(function (d) {
       var pre = (d.node.prerequisites || []).length ? '先修 ' + (d.node.prerequisites || []).length + ' 项' : '起点知识点';
       return '<div class="kgitem" data-id="' + esc(d.id) + '"><span class="kname">' + esc(d.title) + '</span>' +
-        '<span class="kmeta">' + esc(d.subject) + ' · ' + (d.stage === 'highschool' ? '高中' : '大学') + ' · ' + pre + '</span></div>';
+        '<span class="kmeta">' + esc(d.subjectGroup) + ' · ' + (d.stage === 'highschool' ? '高中' : '大学') + ' · ' + pre + '</span></div>';
     }).join('') || '<p class="hint">当前筛选下没有知识点。</p>';
     Array.prototype.forEach.call(document.querySelectorAll('.kgitem'), function (el) {
       el.onclick = function () {
@@ -210,9 +226,11 @@
     var m = {};
     state.docs.forEach(function (d) {
       if (!d.node) return;
+      if (state.stage !== 'all' && d.stage !== state.stage) return;
+      if (state.subject !== 'all' && d.subjectGroup !== state.subject) return;
       if (state.publisher === 'bnu' && String(d.node.book || '').indexOf('北京师范大学出版社') < 0) return;
       var b = d.node.book || '其他';
-      if (!m[b]) m[b] = { book: b, stage: d.stage, subject: d.subject, docs: [] };
+      if (!m[b]) m[b] = { book: b, stage: d.stage, subject: d.subjectGroup, docs: [] };
       m[b].docs.push(d);
     });
     return Object.keys(m).sort(function (a, b) {
@@ -572,6 +590,9 @@
   /* ---------- 初始化 ---------- */
   function init() {
     state.docs = KG.nodes.map(nodeToDoc);
+    var validSubjects = { all: 1 };
+    state.docs.forEach(function (d) { if (d.subjectGroup) validSubjects[d.subjectGroup] = 1; });
+    if (!validSubjects[state.subject]) state.subject = 'all';
     state.api = readLS(LS_API, null) || readLS('xuexu.api.0.2.0', null) || readLS('xuexu.api.0.1.0', null);
     if (STATIC_HOST) {
       state.staticMode = true;
@@ -600,8 +621,16 @@
       b.onclick = function () { var el = activeInput(); el.value = b.textContent; el.focus(); };
     });
 
-    $('stageFilter').onchange = function () { state.stage = this.value; renderFilters(); renderKG(); state.hits = []; renderCitations(); };
-    $('subjectFilter').onchange = function () { state.subject = this.value; renderFilters(); renderKG(); state.hits = []; renderCitations(); };
+    $('stageFilter').onchange = function () {
+      state.stage = this.value; state.activeBook = null; state.activeChapter = null;
+      renderFilters(); renderKG(); renderBooks(); renderChapters(); renderChapterDetail();
+      state.hits = []; renderCitations();
+    };
+    $('subjectFilter').onchange = function () {
+      state.subject = this.value; state.activeBook = null; state.activeChapter = null;
+      renderFilters(); renderKG(); renderBooks(); renderChapters(); renderChapterDetail();
+      state.hits = []; renderCitations();
+    };
     var pubFilter = $('publisherFilter');
     if (pubFilter) pubFilter.onchange = function () {
       state.publisher = this.value;
