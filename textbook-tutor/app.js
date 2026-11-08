@@ -9,7 +9,7 @@
 
   var KG = window.KG || { nodes: [] };
   var TRENDS = window.TRENDS || {};
-  var VERSION = '1.0.0preview8';
+  var VERSION = '1.0.0-preview8';
   var LS_API = 'xuexu.api';
   var LS_WRONG = 'xuexu.wrongbook';
   var STATIC_HOST = /\.github\.io$/i.test(location.hostname) || /(?:^|[?&])demo=1(?:&|$)/.test(location.search);
