@@ -43,7 +43,7 @@
     h1 { margin: 0; font-size: clamp(32px, 4.8vw, 50px); line-height: 1.12; letter-spacing: -0.035em; }
     h1 em { font-style: normal; background: linear-gradient(100deg, var(--blue), var(--teal)); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .lede { max-width: 650px; margin: 16px 0 0; color: var(--muted); font-size: 14.5px; line-height: 1.85; }
-    .grid { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; }
+    .grid { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
     .card {
       background: var(--card); border: 1px solid var(--line); border-radius: 16px;
       overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: inherit;
@@ -88,13 +88,22 @@
     </nav>
 
     <h1>先把题做对，<br /><em>再把方法留下。</em></h1>
-    <p class="lede">三个 AI 学习工具。</p>
+    <p class="lede">四个 AI 学习工具。</p>
 
     <div class="grid">
       <a class="card" href="calculus-tutor/">
         <div class="card-body">
           <h2>高数答疑室</h2>
           <p>大学高数答疑与练习。</p>
+          <div class="tags"><span class="tag">在线可用</span><span class="tag">图片 OCR</span></div>
+          <span class="open">打开</span>
+        </div>
+      </a>
+
+      <a class="card" href="physics-tutor/">
+        <div class="card-body">
+          <h2>物理答疑室</h2>
+          <p>大学普通物理答疑与练习。</p>
           <div class="tags"><span class="tag">在线可用</span><span class="tag">图片 OCR</span></div>
           <span class="open">打开</span>
         </div>

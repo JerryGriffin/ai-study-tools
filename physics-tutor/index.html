@@ -1,0 +1,343 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" /><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Expires" content="0" />
+  <meta name="description" content="物理答疑室：面向大学生的大学普通物理学 AI 答疑与练习工具。诊断卡点、分层提示、分步讲解，支持任意 通用兼容模型。" />
+  <meta name="author" content="JerryGriffin H1" /><meta name="version" content="1.0.0preview8" /><meta name="theme-color" content="#f6f2e9" />
+  <title>物理答疑室 · 大学普通物理学 AI 助教</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f6b5c'/%3E%3Ctext x='32' y='45' font-size='38' font-family='Georgia,serif' fill='%23f6f2e9' text-anchor='middle'%3E%CE%A6%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  <link rel="stylesheet" href="styles.css?v=1.0.0preview8" />
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.9 19.3a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.54 15a1.7 1.7 0 0 0-1.56-1.03H2.9a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.54 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.9 4.54h.01A1.7 1.7 0 0 0 9.94 2.98V2.9a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.01a1.7 1.7 0 0 0 1.56 1.03h.09a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5V5.5z"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="1.5"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
+    <symbol id="i-sigma" viewBox="0 0 24 24"><path d="M18 4H6l7 8-7 8h12"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.34 5.66"/><path d="M20 4v7h-7"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 15H6L5 6M10 11v5M14 11v5"/></symbol>
+    <symbol id="i-light" viewBox="0 0 24 24"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+  </svg>
+
+  <div class="app" id="app">
+    <header class="topbar">
+      <a class="back-home" href="../" title="返回主页" aria-label="返回主页">←</a>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="打开章节菜单" title="章节菜单">
+        <svg class="icon"><use href="#i-menu"></use></svg>
+      </button>
+      <a class="brand" href="#" id="brandBtn" title="回到新对话">
+        <span class="brand-mark">Φ</span>
+        <span class="brand-text">
+          <strong>物理答疑室</strong>
+          <small>PHYSICS STUDIO</small>
+        </span>
+      </a>
+      <button class="model-status" id="statusBtn" title="模型连接状态">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">离线</span>
+      </button>
+      <div class="topbar-actions">
+        <button class="btn ghost practice-top" id="practiceBtn" aria-label="每日一练" title="每日一练">
+          <svg class="icon"><use href="#i-spark"></use></svg>
+          <span>每日一练</span>
+        </button>
+        <button class="icon-btn rail-toggle" id="railBtn" aria-label="显示或隐藏学习面板" title="学习面板">
+          <svg class="icon"><use href="#i-panel"></use></svg>
+        </button>
+        <button class="icon-btn" id="themeBtn" aria-label="切换深浅主题" title="切换主题">
+          <svg class="icon theme-sun"><use href="#i-sun"></use></svg>
+          <svg class="icon theme-moon"><use href="#i-moon"></use></svg>
+        </button>
+        <button class="icon-btn" id="settingsBtn" aria-label="打开设置" title="设置">
+          <svg class="icon"><use href="#i-settings"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="shell">
+      <aside class="sidebar" id="sidebar" aria-label="课程导航">
+        <div class="side-scroll">
+          <button class="new-chat" id="newChatBtn">
+            <svg class="icon"><use href="#i-plus"></use></svg>
+            <span>新对话</span>
+            <kbd>Ctrl K</kbd>
+          </button>
+
+          <div class="side-block">
+            <div class="side-heading">
+              <span>课程章节</span>
+              <span class="count" id="chapterCount">10</span>
+            </div>
+            <nav class="chapter-list" id="chapterList"></nav>
+          </div>
+
+          <div class="side-block recent-block">
+            <div class="side-heading">
+              <span>最近对话</span>
+              <button class="link-btn" id="clearSessionsBtn">清空</button>
+            </div>
+            <div class="recent-list" id="recentList"></div>
+          </div>
+        </div>
+        <div class="side-footer">
+          <button class="side-action" id="wrongBtn">
+            <svg class="icon"><use href="#i-book"></use></svg>
+            <span>错题本</span>
+            <span class="badge" id="wrongCount">0</span>
+          </button>
+          <button class="side-action" id="statsBtn">
+            <svg class="icon"><use href="#i-chart"></use></svg>
+            <span>学习统计</span>
+          </button>
+          <p class="side-note">教学闭环参考 Omni-Edu：诊断 → 引导 → 讲解 → 迁移</p>
+        </div>
+      </aside>
+
+      <div class="scrim" id="scrim"></div>
+
+      <main class="main">
+        <div class="chat-scroll" id="chatScroll">
+          <section class="welcome" id="welcome">
+            <div class="welcome-inner">
+              <p class="eyebrow">
+                <span class="pulse"></span>
+                <span id="welcomeChapterMeta">第 1 章 · 极限与连续</span>
+              </p>
+              <h1>物理答疑室</h1>
+              <p class="lede">写下题目或卡点。</p>
+              <div class="suggest-grid" id="suggestGrid"></div>
+              <div class="welcome-stats">
+                <div><strong id="wAsk">0</strong><span>次提问</span></div>
+                <div><strong id="wSolved">0</strong><span>道练习</span></div>
+                <div><strong id="wDays">0</strong><span>天连续学习</span></div>
+              </div>
+            </div>
+          </section>
+          <div class="message-list" id="messageList"></div>
+          <div class="end-spacer"></div>
+        </div>
+
+        <div class="composer-shell">
+          <div class="composer" id="composer">
+            <div class="pending-images" id="pendingImages" hidden></div>
+            <div class="composer-top">
+              <div class="mode-group" id="modeGroup" role="group" aria-label="回答模式">
+                <button type="button" class="mode-btn active" data-mode="guide">引导式</button>
+                <button type="button" class="mode-btn" data-mode="explain">精讲</button>
+                <button type="button" class="mode-btn" data-mode="exam">速解</button>
+              </div>
+            </div>
+            <textarea id="input" rows="2" maxlength="8000" placeholder="输入题目或卡点…"></textarea>
+            <div class="composer-row">
+              <div class="composer-tools">
+                <button type="button" class="tool-btn" id="formulaBtn" title="插入公式">
+                  <svg class="icon"><use href="#i-sigma"></use></svg>
+                </button>
+                <button type="button" class="tool-btn" id="imageBtn" title="上传题目截图">
+                  <svg class="icon"><use href="#i-image"></use></svg>
+                </button>
+              </div>
+              <button type="button" class="send-btn" id="sendBtn" title="发送" aria-label="发送">
+                <span class="send-label">发送</span>
+                <svg class="icon send-icon"><use href="#i-send"></use></svg>
+                <svg class="icon stop-icon"><use href="#i-stop"></use></svg>
+              </button>
+            </div>
+            <div class="formula-pop" id="formulaPop" hidden></div>
+          </div>
+          <div class="composer-foot">
+            <span>Enter 发送 · Shift + Enter 换行</span>
+            <span class="privacy">对话内容仅发送到你配置的模型服务</span>
+          </div>
+        </div>
+      </main>
+
+      <aside class="rail" id="rail" aria-label="学习面板">
+        <div class="rail-scroll">
+          <section class="card rail-chapter-card">
+            <div class="card-heading">
+              <span>当前章节</span>
+              <button class="link-btn" id="changeChapterBtn">切换</button>
+            </div>
+            <div class="rail-chapter" id="railChapter"></div>
+            <p class="rail-intro" id="railIntro"></p>
+          </section>
+
+          <section class="card">
+            <div class="card-heading">
+              <span>本章公式</span>
+              <span class="muted-note">点击复制</span>
+            </div>
+            <div class="formula-list" id="formulaList"></div>
+          </section>
+
+          <section class="card stats-mini" id="statsMini" role="button" tabindex="0" aria-label="查看学习统计"></section>
+
+          <section class="card daily-card" id="dailyCard"></section>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+  <div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+
+  <!-- 设置 -->
+  <dialog class="modal" id="settingsDialog" aria-labelledby="settingsTitle">
+    <div class="modal-card settings-card">
+      <header class="modal-head">
+        <div>
+          <p class="modal-eyebrow">CONNECTION</p>
+          <h2 id="settingsTitle">连接你的模型</h2>
+        </div>
+        <button class="icon-btn modal-close" data-close aria-label="关闭">
+          <svg class="icon"><use href="#i-close"></use></svg>
+        </button>
+      </header>
+      <div class="modal-body">
+        <p class="settings-intro">
+          推荐用 <code>python serve.py</code> 启动本地代理；也可以填写任意 通用兼容服务地址。不配置也能使用离线演示。
+        </p>
+
+        <div class="preset-row" id="presetRow"></div>
+
+        <label class="field">
+          <span>接口地址 Base URL</span>
+          <input id="setBaseUrl" type="text" spellcheck="false" placeholder="如 http://127.0.0.1:8000/v1 或 /api" autocomplete="off" />
+        </label>
+        <div class="field-grid">
+          <label class="field">
+            <span>模型名称</span>
+            <input id="setModel" type="text" spellcheck="false" placeholder="填写模型名称" autocomplete="off" />
+          </label>
+          <label class="field">
+            <span>API Key</span>
+            <input id="setApiKey" type="password" spellcheck="false" placeholder="本地模型通常留空" autocomplete="off" />
+          </label>
+        </div>
+        <div class="field-grid">
+          <label class="field">
+            <span>温度 <output id="tempOut">0.30</output></span>
+            <input id="setTemp" type="range" min="0" max="1" step="0.05" value="0.3" />
+          </label>
+          <label class="field">
+            <span>最大回复长度</span>
+            <input id="setMaxTokens" type="number" min="128" max="8192" step="64" value="1800" />
+          </label>
+        </div>
+        <div class="check-row">
+          <label class="check"><input id="setStream" type="checkbox" checked /><span>流式输出</span></label>
+          <label class="check"><input id="setVision" type="checkbox" checked /><span>允许发送图片（需视觉模型）</span></label>
+        </div>
+
+        <div class="test-row">
+          <button class="btn ghost" id="testBtn" type="button">测试连接</button>
+          <span class="test-status" id="testStatus">尚未测试</span>
+        </div>
+        <p class="fineprint">
+          密钥只保存在本机浏览器的 localStorage 中，不会上传到任何第三方。若使用公共电脑，请在使用后清除本地数据。
+        </p>
+      </div>
+      <footer class="modal-foot">
+        <button class="link-btn danger" id="resetDataBtn" type="button">清除本地数据</button>
+        <div class="foot-actions">
+          <button class="btn ghost" data-close type="button">取消</button>
+          <button class="btn primary" id="saveSettingsBtn" type="button">保存设置</button>
+        </div>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- 练习 -->
+  <dialog class="modal" id="practiceDialog" aria-labelledby="practiceTitle">
+    <div class="modal-card practice-card">
+      <header class="modal-head">
+        <div>
+          <p class="modal-eyebrow">PRACTICE</p>
+          <h2 id="practiceTitle">每日一练</h2>
+        </div>
+        <div class="practice-head-actions">
+          <select id="practiceFilter" class="select" aria-label="选择章节"></select>
+          <button class="icon-btn modal-close" data-close aria-label="关闭">
+            <svg class="icon"><use href="#i-close"></use></svg>
+          </button>
+        </div>
+      </header>
+      <div class="modal-body practice-body" id="practiceBody"></div>
+      <footer class="modal-foot practice-foot">
+        <button class="link-btn" id="practiceWrongBtn" type="button">加入错题本</button>
+        <div class="foot-actions">
+          <button class="btn ghost" id="practiceNextBtn" type="button">
+            <svg class="icon"><use href="#i-refresh"></use></svg>
+            换一题
+          </button>
+          <button class="btn primary" id="practiceAskBtn" type="button">
+            <svg class="icon"><use href="#i-spark"></use></svg>
+            问 AI 老师
+          </button>
+        </div>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- 错题本 -->
+  <dialog class="modal" id="wrongDialog" aria-labelledby="wrongTitle">
+    <div class="modal-card wrong-card">
+      <header class="modal-head">
+        <div>
+          <p class="modal-eyebrow">NOTEBOOK</p>
+          <h2 id="wrongTitle">错题本 <span class="title-count" id="wrongTitleCount">0</span></h2>
+        </div>
+        <button class="icon-btn modal-close" data-close aria-label="关闭">
+          <svg class="icon"><use href="#i-close"></use></svg>
+        </button>
+      </header>
+      <div class="modal-body wrong-list" id="wrongList"></div>
+      <footer class="modal-foot">
+        <button class="link-btn danger" id="clearWrongBtn" type="button">清空错题本</button>
+        <div class="foot-actions">
+          <button class="btn ghost" data-close type="button">关闭</button>
+        </div>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- 统计 -->
+  <dialog class="modal" id="statsDialog" aria-labelledby="statsTitle">
+    <div class="modal-card stats-card">
+      <header class="modal-head">
+        <div>
+          <p class="modal-eyebrow">PROGRESS</p>
+          <h2 id="statsTitle">学习统计</h2>
+        </div>
+        <button class="icon-btn modal-close" data-close aria-label="关闭">
+          <svg class="icon"><use href="#i-close"></use></svg>
+        </button>
+      </header>
+      <div class="modal-body" id="statsBody"></div>
+    </div>
+  </dialog>
+
+  <script src="vendor/katex/katex.min.js" defer></script>
+  <script src="data.js" defer></script>
+  <script src="app.js?v=1.0.0preview8" defer></script>
+</body>
+</html>

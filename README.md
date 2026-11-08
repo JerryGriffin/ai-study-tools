@@ -3,6 +3,7 @@
 这是 **AI Study Tools** 的静态演示站，只包含 GitHub Pages 运行所需的文件：
 
 - 高数答疑室：静态页面、KaTeX、前端交互、浏览器 OCR 语言模型；
+- 物理答疑室：大学普通物理答疑静态页面、公式与练习；
 - 作业校验台：静态页面、浏览器内 SymPy 校验脚本、预计算示例报告、OCR 语言模型；
 - 教材辅导 · 学序：教材章节、知识点检索与辅导界面（合并自 edu-llm）；
 - 不包含：服务端代码、提示词、OpenCode 集成、多路求解与交叉复核流水线、完整题库数据。
@@ -11,6 +12,7 @@
 
 - 首页：<https://jerrygriffin.github.io/ai-study-tools/>
 - 高数答疑室：<https://jerrygriffin.github.io/ai-study-tools/calculus-tutor/>
+- 物理答疑室：<https://jerrygriffin.github.io/ai-study-tools/physics-tutor/>
 - 作业校验台：<https://jerrygriffin.github.io/ai-study-tools/k12-verifier/>
 - 教材辅导 · 学序：<https://jerrygriffin.github.io/ai-study-tools/textbook-tutor/>
 
