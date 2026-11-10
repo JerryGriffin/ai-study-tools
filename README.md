@@ -22,6 +22,18 @@
 
 目前所有版本均为预览版（Preview），暂不设正式稳定版。
 
+## 数据自检
+
+高数 / 物理题库在 `calculus-tutor/data.js`、`physics-tutor/data.js`，发布前跑一次：
+
+```bash
+npm run lint:data
+```
+
+它会检查章节与题目的必填字段、`chapter` 引用、id / 题干重复、level 范围，
+以及 LaTeX 的 `$`、`$$`、花括号是否闭合和 `TODO` / `undefined` 之类残留。
+只依赖 Node，不需要 `npm install`。
+
 ## 许可
 
 本项目主体为**专有软件，保留所有权利（All Rights Reserved）**，不是开源项目，也不采用 MIT 许可证。

@@ -1,0 +1,10 @@
+{
+  "name": "ai-study-tools-data",
+  "private": true,
+  "type": "module",
+  "description": "AI Study Tools 静态演示站的数据自检（无构建、无运行时依赖）",
+  "scripts": {
+    "lint:data": "node scripts/lint-data.mjs",
+    "lint": "npm run lint:data"
+  }
+}
